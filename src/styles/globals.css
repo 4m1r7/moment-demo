@@ -41,6 +41,25 @@
       U+2215, U+FEFF, U+FFFD;
   }
 
+  /* Medium devices (landscape tablets, 768px and up) */
+  html {
+    font-size: 1vw;
+  }
+
+  /* Medium Large devices (laptops/desktops, 992px and up) --*/
+  @media only screen and (min-width: 768px) {
+    html {
+      font-size: 1vw;
+    }
+  }
+
+  /*  large devices (large laptops and desktops, 1200px and up)-- */
+  @media only screen and (min-width: 1030px) {
+    html {
+      font-size: 1vw;
+    }
+  }
+
   .cursor-newtab {
     cursor: url('/images/new-tab.png') 10 10, pointer;
   }
