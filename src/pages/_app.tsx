@@ -1,14 +1,21 @@
+import { AnimatePresence } from 'framer-motion';
 import { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
 
 import '@/styles/globals.css';
 
-/**
- * !STARTERCONF info
- * ? `Layout` component is called in every page using `np` snippets. If you have consistent layout across all page, you can add it here too
- */
+import { PositionProvider } from '@/PositionContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  const router = useRouter();
+
+  return (
+    <PositionProvider>
+      <AnimatePresence mode='wait'>
+        <Component {...pageProps} key={router.pathname} />
+      </AnimatePresence>
+    </PositionProvider>
+  );
 }
 
 export default MyApp;

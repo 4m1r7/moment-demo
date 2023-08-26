@@ -1,0 +1,23 @@
+import { gql } from '@apollo/client';
+
+export const GET_MEMBERS = gql`
+  query AllMembers {
+    members {
+      edges {
+        node {
+          id
+          title
+          excerpt
+          featuredImage {
+            node {
+              sourceUrl(size: MEDIUM)
+            }
+          }
+          memberFileds {
+            exMember
+          }
+        }
+      }
+    }
+  }
+`;

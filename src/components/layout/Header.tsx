@@ -1,31 +1,88 @@
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 import * as React from 'react';
 
-import UnstyledLink from '@/components/links/UnstyledLink';
+import Logo from '~/svg/logo.svg';
 
-const links = [
-  { href: '/', label: 'Route 1' },
-  { href: '/', label: 'Route 2' },
-];
+interface Position {
+  x: string;
+  y: string;
+  width: string;
+  height: string;
+  rotate: number;
+  opacity: number;
+}
+interface stagePositions {
+  logo: Position;
+  line: Position;
+  menu: Position;
+  blue: Position;
+  yellow: Position;
+  green: Position;
+  pink: Position;
+}
+interface shapeProps {
+  positions: stagePositions;
+  initialPositions: stagePositions;
+}
 
-export default function Header() {
+export default function Header({ positions, initialPositions }: shapeProps) {
   return (
-    <header className='sticky top-0 z-50 bg-white'>
-      <div className='layout flex h-14 items-center justify-between'>
-        <UnstyledLink href='/' className='font-bold hover:text-gray-600'>
-          Home
-        </UnstyledLink>
-        <nav>
-          <ul className='flex items-center justify-between space-x-4'>
-            {links.map(({ href, label }) => (
-              <li key={`${href}${label}`}>
-                <UnstyledLink href={href} className='hover:text-gray-600'>
-                  {label}
-                </UnstyledLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+    <header className='pointer-events-none absolute left-0 top-0 flex h-fit w-full items-center justify-start gap-24 p-28'>
+      <motion.div
+        className='pointer-events-auto absolute'
+        style={{}}
+        key='logo'
+        initial={initialPositions.logo}
+        animate={positions.logo}
+        transition={{
+          ease: 'easeInOut',
+          duration: 1.5,
+          // delay: .5,
+        }}
+      >
+        <Link href='/'>
+          <Logo className='h-28 w-full' />
+        </Link>
+      </motion.div>
+
+      <motion.div
+        className=' pointer-events-auto ml-[28rem] flex items-center justify-center '
+        style={{}}
+        key='line'
+        initial={initialPositions.line}
+        animate={positions.line}
+        transition={{
+          ease: 'easeInOut',
+          duration: 1.5,
+          // delay: .5,
+        }}
+      >
+        <div className='h-full w-[1px] bg-gray-400' />
+      </motion.div>
+
+      <motion.ul
+        className=' pointer-events-auto flex h-full w-full items-center justify-between '
+        style={{}}
+        key='menu'
+        initial={initialPositions.menu}
+        animate={positions.menu}
+        transition={{
+          ease: 'easeInOut',
+          duration: 1.5,
+          // delay: .5,
+        }}
+      >
+        <li className=' text-4xl font-thin text-gray-500'>
+          <Link href='/projects'>Projects</Link>
+        </li>
+        <li className=' text-4xl font-thin text-gray-500 '>
+          <Link href='/about'>About</Link>
+        </li>
+        <li className=' text-4xl font-thin text-gray-500 '>
+          <Link href='/contact'>Contact</Link>
+        </li>
+      </motion.ul>
     </header>
   );
 }

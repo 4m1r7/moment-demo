@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -5,6 +6,8 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
 import { usePosition } from '@/PositionContext';
+
+import Asterisk from '~/svg/asterisk.svg';
 
 interface Position {
   x: string;
@@ -26,67 +29,67 @@ interface stagePositions {
 
 const initialPositions: stagePositions = {
   logo: {
-    x: '0vw',
-    y: '-15vh',
+    x: '6vw',
+    y: '-10vh',
     width: '18vw',
     height: 'fit-content',
     opacity: 0,
     rotate: 0,
   },
   line: {
-    x: '0vw',
-    y: '-15vh',
+    x: '13vw',
+    y: '-10vh',
     width: '1vw',
     height: '3.5rem',
     opacity: 0,
     rotate: 0,
   },
   menu: {
-    x: '0vw',
-    y: '-15vh',
-    width: '28vw',
+    x: '18vw',
+    y: '-10vh',
+    width: '42vw',
     height: 'fit-content',
     opacity: 0,
     rotate: 0,
   },
   blue: {
-    x: '28vw',
-    y: '0vh',
-    width: '17vw',
-    height: '17vw',
+    x: 'calc( -50vw + 9.2rem )',
+    y: 'calc( -60vh + 8.2rem )',
+    width: '2.5vw',
+    height: '2.5vw',
     opacity: 0,
-    rotate: 0,
+    rotate: -360,
   },
   yellow: {
-    x: '8vw',
-    y: '0vh',
-    width: '12.5vw',
-    height: '12.5vw',
+    x: 'calc( -50vw + 8rem )',
+    y: 'calc( -60vh + 8rem )',
+    width: '2vw',
+    height: '2vw',
     opacity: 0,
-    rotate: 0,
+    rotate: -340,
   },
   green: {
-    x: '-8vw',
-    y: '0vh',
-    width: '14vw',
-    height: '14vw',
+    x: 'calc( -50vw + 9.2rem )',
+    y: 'calc( -60vh + 9.3rem )',
+    width: '2.3vw',
+    height: '2.3vw',
     opacity: 0,
-    rotate: 0,
+    rotate: -80,
   },
   pink: {
-    x: '-28vw',
-    y: '0vh',
-    width: '14vw',
-    height: '14vw',
+    x: 'calc( -50vw + 7.8rem )',
+    y: 'calc( -60vh + 8.8rem )',
+    width: '2.3vw',
+    height: '2.3vw',
     opacity: 0,
-    rotate: 0,
+    rotate: 410,
   },
 };
 
 const stagePositions: { [key: string]: stagePositions } = {
   firstPositions: {
     logo: {
-      x: '0vw',
+      x: '6vw',
       y: '0vh',
       width: '18vw',
       height: 'fit-content',
@@ -94,7 +97,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       rotate: 0,
     },
     line: {
-      x: '0vw',
+      x: '13vw',
       y: '0vh',
       width: '1vw',
       height: '3.5rem',
@@ -102,44 +105,44 @@ const stagePositions: { [key: string]: stagePositions } = {
       rotate: 0,
     },
     menu: {
-      x: '0vw',
+      x: '18vw',
       y: '0vh',
-      width: '28vw',
+      width: '42vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
     },
     blue: {
-      x: '3vw',
-      y: '2vh',
-      width: '17vw',
-      height: '17vw',
+      x: 'calc( -50vw + 9rem )',
+      y: 'calc( -50vh + 8.5rem )',
+      width: '2.5vw',
+      height: '2.5vw',
       opacity: 0.4,
-      rotate: 0,
+      rotate: -50,
     },
     yellow: {
-      x: '0vw',
-      y: '-6vh',
-      width: '12.5vw',
-      height: '12.5vw',
+      x: 'calc( -50vw + 7.8rem )',
+      y: 'calc( -50vh + 8.3rem )',
+      width: '2vw',
+      height: '2vw',
       opacity: 0.4,
-      rotate: 0,
+      rotate: -90,
     },
     green: {
-      x: '-4vw',
-      y: '6vh',
-      width: '14vw',
-      height: '14vw',
+      x: 'calc( -50vw + 9rem )',
+      y: 'calc( -50vh + 9.5rem )',
+      width: '2.3vw',
+      height: '2.3vw',
       opacity: 0.4,
-      rotate: 0,
+      rotate: 270,
     },
     pink: {
-      x: '-5vw',
-      y: '-7vh',
-      width: '14vw',
-      height: '14vw',
+      x: 'calc( -50vw + 8.1rem )',
+      y: 'calc( -50vh + 9.2rem )',
+      width: '2.3vw',
+      height: '2.3vw',
       opacity: 0.4,
-      rotate: 0,
+      rotate: 280,
     },
   },
   defaultPositions: {
@@ -458,34 +461,39 @@ const stageStyles: { [key: string]: stageStyles } = {
   },
 };
 
-export default function HomePage() {
-  const [showDefaultMode, setShowDefaultMode] = useState(true);
+const mainComponent = {
+  hidden: { opacity: 0, x: -100, y: 0 },
+  enter: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    transition: { ease: 'easeOut', duration: 1.5 },
+  },
+  exit: {
+    opacity: 0,
+    x: 100,
+    y: 0,
+    transition: { ease: 'easeOut', duration: 0.5 },
+  },
+};
 
+export default function About() {
   const { lastPosition, setLastPosition } = usePosition();
 
   const dynamicInitials = lastPosition ? lastPosition : initialPositions;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [positions, setPositions] = useState<stagePositions>(
     stagePositions['firstPositions']
   );
+
+  const [result, setResult] = useState('');
 
   useEffect(() => {
     setLastPosition(positions);
   }, [positions, setLastPosition]);
 
-  // TODO - remove no-unused-vars below when use implemented
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars
-  const [styles, setStyles] = useState<stageStyles>(
-    stageStyles['firstPositions']
-  );
-
   const handleShapeClick = (shape: string) => {
-    if (showDefaultMode) {
-      setPositions(stagePositions['defaultPositions']);
-      setStyles(stageStyles['defaultPositions']);
-      setShowDefaultMode(false);
-    } else if (positions === stagePositions[shape]) {
+    if (positions === stagePositions[shape]) {
       setPositions(stagePositions['defaultPositions']);
       setStyles(stageStyles['defaultPositions']);
     } else {
@@ -493,6 +501,36 @@ export default function HomePage() {
       setStyles(stageStyles[shape]);
     }
   };
+
+  const handleSubmit = async (event: {
+    preventDefault: () => void;
+    target: HTMLFormElement | undefined;
+  }) => {
+    event.preventDefault();
+    setResult('Sending....');
+    const formData = new FormData(event.target);
+
+    formData.append('access_key', 'c6b542e4-bc5d-4ec0-ad2f-95b4623a58f1');
+
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData,
+    }).then((res) => res.json());
+
+    if (res.success) {
+      // console.log("Success", res);
+      setResult(res.message);
+    } else {
+      // console.log("Error", res);
+      setResult(res.message);
+    }
+  };
+
+  // TODO - remove no-unused-vars below when use implemented
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars
+  const [styles, setStyles] = useState<stageStyles>(
+    stageStyles['firstPositions']
+  );
 
   return (
     <Layout
@@ -503,7 +541,119 @@ export default function HomePage() {
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
-      <main></main>
+      <main>
+        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent text-center'>
+          <motion.div
+            className='pointer-events-auto flex w-full flex-col gap-28 bg-transparent px-32 pb-28 pt-80'
+            style={{}}
+            key='contact-page'
+            variants={mainComponent}
+            initial='hidden'
+            animate='enter'
+            exit='exit'
+            transition={{
+              ease: 'easeOut',
+              duration: 1,
+              delay: 1,
+            }}
+          >
+            {/* Contact Form */}
+            <form
+              onSubmit={handleSubmit}
+              className='flex w-full justify-between gap-48 text-left'
+            >
+              <div className='flex w-1/3 flex-col gap-12'>
+                {/* TODO create proper submit results window */}
+                <p>{result}</p>
+
+                <div className='flex w-full flex-col'>
+                  <label
+                    htmlFor='name'
+                    className='w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold text-neutral-500'
+                  >
+                    Name
+                  </label>
+                  <input
+                    id='name'
+                    name='name'
+                    type='text'
+                    className='h-36 border-0 border-b border-neutral-500 text-3xl text-gray-500 focus:border-neutral-500 focus:ring-0'
+                  />
+                </div>
+
+                <div className='flex w-full flex-col'>
+                  <label
+                    htmlFor='email'
+                    className='w-fit  border-b border-neutral-400 pb-5 text-4xl font-semibold text-neutral-500'
+                  >
+                    Email
+                  </label>
+                  <input
+                    id='email'
+                    name='email'
+                    type='email'
+                    className='h-36 border-0 border-b border-neutral-500 text-3xl text-gray-500 focus:border-neutral-500 focus:ring-0'
+                  />
+                </div>
+
+                <div className='flex w-full flex-col'>
+                  <label
+                    htmlFor='location'
+                    className='w-fit  border-b border-neutral-400 pb-5 text-4xl font-semibold text-neutral-500'
+                  >
+                    Location
+                  </label>
+                  <input
+                    id='location'
+                    name='location'
+                    type='text'
+                    className='h-36 border-0 border-b border-neutral-500 text-3xl text-gray-500 focus:border-neutral-500 focus:ring-0'
+                  />
+                </div>
+              </div>
+
+              <div className='flex w-2/3 flex-col'>
+                <div className='flex w-full flex-grow flex-col'>
+                  <label
+                    htmlFor='message'
+                    className='h-fit w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold text-neutral-500'
+                  >
+                    Your Message
+                  </label>
+                  <textarea
+                    id='message'
+                    name='message'
+                    className='flex-grow border-0 border-b border-neutral-500 py-8 text-3xl text-gray-500 focus:border-neutral-500 focus:ring-0'
+                    required
+                  ></textarea>
+                </div>
+
+                <button
+                  type='submit'
+                  className='mt-36 h-24 rounded-full bg-gradient-to-r from-blue-400 to-pink-300 text-4xl font-bold text-white'
+                >
+                  Send
+                </button>
+              </div>
+            </form>
+
+            {/* Job Opportunities Banner */}
+            <a
+              href='mailto:Jobs@Momentstudio.com'
+              className='bg-customBlue flex w-full items-center justify-around rounded-full'
+            >
+              <Asterisk className='h-8 w-8' />
+
+              <p className='w-fit p-24 text-[2.5rem] font-light leading-normal text-white'>
+                For Job Opportunities please contact <br />
+                via Jobs@Momentstudio.com
+              </p>
+
+              <Asterisk className='h-8 w-8' />
+            </a>
+          </motion.div>
+        </section>
+      </main>
     </Layout>
   );
 }
