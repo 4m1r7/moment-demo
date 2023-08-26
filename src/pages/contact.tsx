@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { FormEventHandler, useEffect, useState } from 'react';
 
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
@@ -502,13 +502,10 @@ export default function About() {
     }
   };
 
-  const handleSubmit = async (event: {
-    preventDefault: () => void;
-    target: HTMLFormElement | undefined;
-  }) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     setResult('Sending....');
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target as HTMLFormElement);
 
     formData.append('access_key', 'c6b542e4-bc5d-4ec0-ad2f-95b4623a58f1');
 
