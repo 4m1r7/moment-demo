@@ -465,7 +465,6 @@ export default function HomePage() {
 
   const dynamicInitials = lastPosition ? lastPosition : initialPositions;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [positions, setPositions] = useState<stagePositions>(
     stagePositions['firstPositions']
   );
