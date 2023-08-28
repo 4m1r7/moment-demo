@@ -82,7 +82,6 @@ const initialPositions: stagePositions = {
     rotate: 0,
   },
 };
-
 const stagePositions: { [key: string]: stagePositions } = {
   firstPositions: {
     logo: {
@@ -203,7 +202,7 @@ const stagePositions: { [key: string]: stagePositions } = {
   blue: {
     logo: {
       x: '0vw',
-      y: 'calc(75vh - 15.8rem)',
+      y: '55vh',
       width: '18vw',
       height: 'fit-content',
       opacity: 1,
@@ -211,7 +210,7 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
     line: {
       x: '-9vw',
-      y: 'calc(75vh - 20rem)',
+      y: '49vh',
       width: '1vw',
       height: '35rem',
       opacity: 1,
@@ -219,7 +218,7 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
     menu: {
       x: '-28.4vw',
-      y: 'calc(75vh - 23.5rem)',
+      y: '45vh',
       width: '28.2vw',
       height: 'fit-content',
       opacity: 1,
@@ -458,7 +457,7 @@ const stageStyles: { [key: string]: stageStyles } = {
   },
 };
 
-export default function HomePage() {
+export default function Home() {
   const [showDefaultMode, setShowDefaultMode] = useState(true);
 
   const { lastPosition, setLastPosition } = usePosition();
@@ -492,15 +491,20 @@ export default function HomePage() {
       setStyles(stageStyles[shape]);
     }
   };
+  const handleLogoClick = () => {
+    // TODO handle logo click in Home
+    setShowDefaultMode(false);
+  };
 
   return (
     <Layout
       positions={positions}
       initialPositions={dynamicInitials}
       handleShapeClick={handleShapeClick}
+      handleLogoClick={handleLogoClick}
+      noFooter
     >
-      {/* <Seo templateTitle='Home' /> */}
-      <Seo />
+      <Seo templateTitle='Home' />
 
       <main></main>
     </Layout>

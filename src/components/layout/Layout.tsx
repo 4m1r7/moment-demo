@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import Shapes from '@/components/layout/Shapes';
 
@@ -24,14 +25,20 @@ interface LayoutProps {
   children: React.ReactNode;
   positions: stagePositions;
   initialPositions: stagePositions;
+  brightHeader?: boolean;
+  noFooter?: boolean;
   handleShapeClick: (shape: string) => void;
+  handleLogoClick: () => void;
 }
 
 export default function Layout({
   children,
   positions,
   initialPositions,
+  brightHeader,
+  noFooter,
   handleShapeClick,
+  handleLogoClick,
 }: LayoutProps) {
   return (
     <>
@@ -41,7 +48,13 @@ export default function Layout({
         initialPositions={initialPositions}
         handleShapeClick={handleShapeClick}
       />
-      <Header positions={positions} initialPositions={initialPositions} />
+      <Header
+        positions={positions}
+        initialPositions={initialPositions}
+        brightHeader={brightHeader}
+        handleLogoClick={handleLogoClick}
+      />
+      {!noFooter && <Footer />}
     </>
   );
 }

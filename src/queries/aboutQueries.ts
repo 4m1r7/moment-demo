@@ -7,15 +7,30 @@ export const GET_MEMBERS = gql`
         node {
           id
           title
-          excerpt
           featuredImage {
             node {
               sourceUrl(size: MEDIUM)
             }
           }
-          memberFileds {
+          memberFields {
+            position
             exMember
           }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ABOUT = gql`
+  query AboutPage {
+    pageBy(uri: "about") {
+      id
+      title
+      content
+      featuredImage {
+        node {
+          mediaItemUrl
         }
       }
     }

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import Logo from '~/svg/logo.svg';
@@ -24,9 +25,18 @@ interface stagePositions {
 interface shapeProps {
   positions: stagePositions;
   initialPositions: stagePositions;
+  brightHeader?: boolean;
+  handleLogoClick: () => void;
 }
 
-export default function Header({ positions, initialPositions }: shapeProps) {
+export default function Header({
+  positions,
+  initialPositions,
+  brightHeader,
+  handleLogoClick,
+}: shapeProps) {
+  const router = useRouter();
+
   return (
     <header className='pointer-events-none absolute left-0 top-0 flex h-fit w-full items-center justify-start gap-24 p-28'>
       <motion.div
@@ -40,10 +50,12 @@ export default function Header({ positions, initialPositions }: shapeProps) {
           duration: 1.5,
           // delay: .5,
         }}
+        onClick={handleLogoClick}
       >
-        <Link href='/'>
-          <Logo className='h-28 w-full' />
-        </Link>
+        <Logo
+          className={`h-28 w-full cursor-pointer
+                      ${brightHeader ? 'bright-logo' : ''}`}
+        />
       </motion.div>
 
       <motion.div
@@ -58,11 +70,16 @@ export default function Header({ positions, initialPositions }: shapeProps) {
           // delay: .5,
         }}
       >
-        <div className='h-full w-[1px] bg-gray-400' />
+        <div
+          className={` h-full w-[1px] ${
+            brightHeader ? 'bg-white' : 'bg-gray-400'
+          } `}
+        />
       </motion.div>
 
       <motion.ul
-        className=' pointer-events-auto flex h-full w-full items-center justify-between '
+        className={` pointer-events-auto flex h-full w-full items-center justify-between text-4xl font-thin
+                    ${brightHeader ? 'text-white' : 'text-gray-500'}`}
         style={{}}
         key='menu'
         initial={initialPositions.menu}
@@ -73,13 +90,13 @@ export default function Header({ positions, initialPositions }: shapeProps) {
           // delay: .5,
         }}
       >
-        <li className=' text-4xl font-thin text-gray-500'>
+        <li className={router.pathname == '/projects' ? 'font-bold' : ''}>
           <Link href='/projects'>Projects</Link>
         </li>
-        <li className=' text-4xl font-thin text-gray-500 '>
+        <li className={router.pathname == '/about' ? 'font-bold' : ''}>
           <Link href='/about'>About</Link>
         </li>
-        <li className=' text-4xl font-thin text-gray-500 '>
+        <li className={router.pathname == '/contact' ? 'font-semibold' : ''}>
           <Link href='/contact'>Contact</Link>
         </li>
       </motion.ul>

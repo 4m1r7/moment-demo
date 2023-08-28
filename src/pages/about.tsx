@@ -1,14 +1,17 @@
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import client from '@/lib/apolloClient';
 
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
 import { usePosition } from '@/PositionContext';
 
-import Asterisk from '~/svg/asterisk.svg';
+import { GET_ABOUT, GET_MEMBERS } from '../queries/aboutQueries';
 
 interface Position {
   x: string;
@@ -27,29 +30,61 @@ interface stagePositions {
   green: Position;
   pink: Position;
 }
+interface MemberNode {
+  node: {
+    id: string;
+    memberFields: {
+      exMember: true | null;
+      position: string;
+    };
+    title: string;
+    featuredImage: {
+      node: {
+        sourceUrl: string;
+      };
+    };
+  };
+}
+interface MembersData {
+  members: {
+    edges: MemberNode[];
+  };
+}
+interface PageData {
+  pageBy: {
+    __typename: string;
+    content: string;
+    featuredImage: {
+      node: {
+        mediaItemUrl: string;
+      };
+    };
+  };
+}
+
 const initialPositions: stagePositions = {
   logo: {
-    x: '6vw',
-    y: '-10vh',
+    x: '0vw',
+    y: '-53.15vw',
     width: '18vw',
     height: 'fit-content',
-    opacity: 0,
+    opacity: 1,
     rotate: 0,
   },
   line: {
-    x: '13vw',
-    y: '-10vh',
+    x: '21.5vw',
+    y: '-50vw',
     width: '1vw',
-    height: '3.5rem',
-    opacity: 0,
-    rotate: 0,
+    height: '89vw',
+    opacity: 1,
+    rotate: 90,
   },
   menu: {
-    x: '18vw',
-    y: '-10vh',
-    width: '42vw',
+    x: '35.75vw',
+    y: '-52.5vw',
+    width: '25vw',
     height: 'fit-content',
-    opacity: 0,
+    opacity: 1,
     rotate: 0,
   },
   blue: {
@@ -88,118 +123,60 @@ const initialPositions: stagePositions = {
 const stagePositions: { [key: string]: stagePositions } = {
   firstPositions: {
     logo: {
-      x: '6vw',
-      y: '0vh',
+      x: '0vw',
+      y: '-43.15vw',
       width: '18vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
     },
     line: {
-      x: '13vw',
-      y: '0vh',
+      x: '21.5vw',
+      y: '-40vw',
       width: '1vw',
-      height: '3.5rem',
+      height: '89vw',
       opacity: 1,
-      rotate: 0,
+      rotate: 90,
     },
     menu: {
-      x: '18vw',
-      y: '0vh',
-      width: '42vw',
+      x: '35.75vw',
+      y: '-42.5vw',
+      width: '25vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
     },
     blue: {
-      x: 'calc( -50vw + 9rem )',
-      y: 'calc( -50vh + 8.5rem )',
+      x: 'calc( -50vw + 9.2rem )',
+      y: 'calc( -50vh + 8.2rem )',
       width: '2.5vw',
       height: '2.5vw',
-      opacity: 0.4,
-      rotate: -50,
+      opacity: 0,
+      rotate: -360,
     },
     yellow: {
-      x: 'calc( -50vw + 7.8rem )',
-      y: 'calc( -50vh + 8.3rem )',
+      x: 'calc( -50vw + 8rem )',
+      y: 'calc( -50vh + 8rem )',
       width: '2vw',
       height: '2vw',
-      opacity: 0.4,
-      rotate: -90,
+      opacity: 0,
+      rotate: -340,
     },
     green: {
-      x: 'calc( -50vw + 9rem )',
-      y: 'calc( -50vh + 9.5rem )',
+      x: 'calc( -50vw + 9.2rem )',
+      y: 'calc( -50vh + 9.3rem )',
       width: '2.3vw',
       height: '2.3vw',
-      opacity: 0.4,
-      rotate: 270,
+      opacity: 0,
+      rotate: -80,
     },
     pink: {
-      x: 'calc( -50vw + 8.1rem )',
-      y: 'calc( -50vh + 9.2rem )',
+      x: 'calc( -50vw + 7.8rem )',
+      y: 'calc( -50vh + 8.8rem )',
       width: '2.3vw',
       height: '2.3vw',
-      opacity: 0.4,
-      rotate: 280,
-    },
-  },
-  defaultPositions: {
-    logo: {
-      x: '0vw',
-      y: '0vh',
-      width: '18vw',
-      height: 'fit-content',
-      opacity: 1,
-      rotate: 0,
-    },
-    line: {
-      x: '0vw',
-      y: '0vh',
-      width: '17vw',
-      height: '3.5rem',
-      opacity: 1,
-      rotate: 0,
-    },
-    menu: {
-      x: '0vw',
-      y: '0vh',
-      width: '45vw',
-      height: 'fit-content',
-      opacity: 1,
-      rotate: 0,
-    },
-    blue: {
-      x: '26vw',
-      y: '-11vh',
-      width: '24vw',
-      height: '24vw',
-      opacity: 0.4,
-      rotate: 6,
-    },
-    yellow: {
-      x: '-24vw',
-      y: '14vh',
-      width: '19vw',
-      height: '19vw',
-      opacity: 0.4,
-      rotate: -40,
-    },
-    green: {
-      x: '5vw',
-      y: '23vh',
-      width: '18vw',
-      height: '18vw',
-      opacity: 0.4,
-      rotate: 160,
-    },
-    pink: {
-      x: '-11vw',
-      y: '-14vh',
-      width: '22vw',
-      height: '22vw',
-      opacity: 0.4,
-      rotate: -18,
+      opacity: 0,
+      rotate: 410,
     },
   },
   blue: {
@@ -435,10 +412,25 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
   },
 };
+const mainComponent = {
+  hidden: { opacity: 0, x: -100, y: 0 },
+  enter: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    transition: { ease: 'easeOut', duration: 1.5 },
+  },
+  exit: {
+    opacity: 0,
+    x: 100,
+    y: 0,
+    transition: { ease: 'easeOut', duration: 0.5 },
+  },
+};
+
 interface stageStyles {
   element: string;
 }
-
 const stageStyles: { [key: string]: stageStyles } = {
   firstPositions: {
     element: ' ',
@@ -460,68 +452,44 @@ const stageStyles: { [key: string]: stageStyles } = {
   },
 };
 
-const mainComponent = {
-  hidden: { opacity: 0, x: -100, y: 0 },
-  enter: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    transition: { ease: 'easeOut', duration: 1.5 },
-  },
-  exit: {
-    opacity: 0,
-    x: 100,
-    y: 0,
-    transition: { ease: 'easeOut', duration: 0.5 },
-  },
-};
+interface AboutProps {
+  aboutData: PageData;
+  membersData: MembersData;
+}
 
-export default function Contact() {
+export default function About({ aboutData, membersData }: AboutProps) {
   const { lastPosition, setLastPosition } = usePosition();
   const { setHomeMode } = usePosition();
   const router = useRouter();
 
   const dynamicInitials = lastPosition ? lastPosition : initialPositions;
 
-  const [positions] = useState<stagePositions>(
+  const [positions, setPositions] = useState<stagePositions>(
     stagePositions['firstPositions']
   );
-
-  const [result, setResult] = useState('');
 
   useEffect(() => {
     setLastPosition(positions);
   }, [positions, setLastPosition]);
 
-  const handleShapeClick = () => {
-    setHomeMode('default');
-    router.push('/');
+  const handleShapeClick = (shape: string) => {
+    if (positions === stagePositions[shape]) {
+      setPositions(stagePositions['defaultPositions']);
+      setStyles(stageStyles['defaultPositions']);
+    } else {
+      setPositions(stagePositions[shape]);
+      setStyles(stageStyles[shape]);
+    }
   };
+
   const handleLogoClick = () => {
     setHomeMode('landing');
     router.push('/');
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-    event.preventDefault();
-    setResult('Sending....');
-    const formData = new FormData(event.target as HTMLFormElement);
-
-    formData.append('access_key', 'c6b542e4-bc5d-4ec0-ad2f-95b4623a58f1');
-
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      body: formData,
-    }).then((res) => res.json());
-
-    if (res.success) {
-      // console.log("Success", res);
-      setResult(res.message);
-    } else {
-      // console.log("Error", res);
-      setResult(res.message);
-    }
-  };
+  const prevMembers = membersData.members.edges.filter(
+    (member: MemberNode) => member.node.memberFields.exMember
+  );
 
   // TODO - remove no-unused-vars below when use implemented
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars
@@ -536,116 +504,130 @@ export default function Contact() {
       handleShapeClick={handleShapeClick}
       handleLogoClick={handleLogoClick}
     >
-      <Seo templateTitle='Contact' />
+      <Seo templateTitle='Home' />
 
       <main>
-        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-80  text-center'>
+        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-64 text-center '>
           <motion.div
-            className='pointer-events-auto flex w-full flex-col gap-28 bg-transparent px-32 pb-28'
+            className='pointer-events-auto flex w-full flex-col gap-28 bg-transparent px-32 pb-28 '
             style={{}}
-            key='contact-page'
+            key='about'
             variants={mainComponent}
             initial='hidden'
             animate='enter'
             exit='exit'
           >
-            {/* Contact Form */}
-            <form
-              onSubmit={handleSubmit}
-              className='flex w-full justify-between gap-48 text-left'
-            >
-              <div className='flex w-1/3 flex-col gap-12'>
-                {/* TODO create proper submit results window */}
-                <p>{result}</p>
+            {/* Team Photo */}
+            <div className='relative h-[55vh] w-full overflow-hidden rounded-full bg-stone-200'>
+              {aboutData.pageBy.featuredImage.node.mediaItemUrl && (
+                <Image
+                  src={aboutData.pageBy.featuredImage.node.mediaItemUrl}
+                  fill
+                  sizes='90vw'
+                  quality={98}
+                  alt='Moment Team'
+                  style={{ objectFit: 'cover', objectPosition: '50% 40%' }}
+                />
+              )}
+            </div>
 
-                <div className='flex w-full flex-col'>
-                  <label
-                    htmlFor='name'
-                    className='text-customGray w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
-                  >
-                    Name
-                  </label>
-                  <input
-                    id='name'
-                    name='name'
-                    type='text'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
-                  />
-                </div>
+            {/* About Paragraph */}
+            <div
+              className=' cms-content text-customGray mb-20 w-full px-[15%] text-left'
+              dangerouslySetInnerHTML={{ __html: aboutData.pageBy.content }}
+            />
 
-                <div className='flex w-full flex-col'>
-                  <label
-                    htmlFor='email'
-                    className='text-customGray  w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
-                  >
-                    Email
-                  </label>
-                  <input
-                    id='email'
-                    name='email'
-                    type='email'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
-                  />
-                </div>
+            {/* Current Members */}
+            <h2 className='text-customGray w-full text-6xl'>
+              Current Members of Moment
+            </h2>
 
-                <div className='flex w-full flex-col'>
-                  <label
-                    htmlFor='location'
-                    className='text-customGray  w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
+            <div className='grid w-full grid-cols-4 gap-28 px-16'>
+              {membersData.members.edges
+                .filter((member: MemberNode) => {
+                  return !member.node.memberFields.exMember;
+                })
+                .reverse()
+                .map((member: MemberNode) => (
+                  <div
+                    key={member.node.id}
+                    className='text-customGray relative flex flex-col items-center justify-start text-center'
                   >
-                    Location
-                  </label>
-                  <input
-                    id='location'
-                    name='location'
-                    type='text'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
-                  />
+                    <div className='relative mb-9 aspect-square w-full overflow-hidden rounded-full bg-stone-200'>
+                      {member.node.featuredImage.node.sourceUrl && (
+                        <Image
+                          src={member.node.featuredImage.node.sourceUrl}
+                          fill
+                          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                          alt='Moment Team'
+                          style={{ objectFit: 'cover' }}
+                        />
+                      )}
+                    </div>
+
+                    <h3 className='mb-1'>{member.node.title}</h3>
+
+                    <p className=' text-2xl font-extralight'>
+                      {member.node.memberFields.position}
+                    </p>
+                  </div>
+                ))}
+            </div>
+
+            {/* Previous Members (conditionally rendered if there are any previous members) */}
+            {prevMembers.length > 0 && (
+              <div className='mt-8 flex w-full flex-col gap-28'>
+                <h2 className='text-customGray w-full text-6xl'>
+                  Previous Members of Moment
+                </h2>
+
+                <div className='grid w-full grid-cols-4 gap-28 px-16'>
+                  {prevMembers.reverse().map((member: MemberNode) => (
+                    <div
+                      key={member.node.id}
+                      className='text-customGray relative flex flex-col items-center justify-start text-center'
+                    >
+                      <div className='relative mb-9 aspect-square w-full overflow-hidden rounded-full'>
+                        <Image
+                          src={member.node.featuredImage.node.sourceUrl}
+                          fill
+                          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                          alt='Moment Team'
+                          style={{
+                            objectFit: 'cover',
+                            objectPosition: '50% 40%',
+                          }}
+                        />
+                      </div>
+                      <h3 className='mb-1'>{member.node.title}</h3>
+                      <p className=' text-2xl font-extralight'>
+                        {member.node.memberFields.position}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
-
-              <div className='flex w-2/3 flex-col'>
-                <div className='flex w-full flex-grow flex-col'>
-                  <label
-                    htmlFor='message'
-                    className='text-customGray h-fit w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
-                  >
-                    Your Message
-                  </label>
-                  <textarea
-                    id='message'
-                    name='message'
-                    className='customGray flex-grow border-0 border-b border-neutral-500 py-8 text-3xl focus:border-neutral-500 focus:ring-0'
-                    required
-                  ></textarea>
-                </div>
-
-                <button
-                  type='submit'
-                  className='mt-36 h-24 rounded-full bg-gradient-to-r from-blue-400 to-pink-300 text-4xl font-bold text-white'
-                >
-                  Send
-                </button>
-              </div>
-            </form>
-
-            {/* Job Opportunities Banner */}
-            <a
-              href='mailto:Jobs@Momentstudio.com'
-              className='bg-customBlue flex w-full items-center justify-around rounded-full'
-            >
-              <Asterisk className='h-8 w-8' />
-
-              <p className='w-fit p-24 text-[2.5rem] font-light leading-normal text-white'>
-                For Job Opportunities please contact <br />
-                via Jobs@Momentstudio.com
-              </p>
-
-              <Asterisk className='h-8 w-8' />
-            </a>
+            )}
           </motion.div>
         </section>
       </main>
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const { data: membersData } = await client.query({
+    query: GET_MEMBERS,
+  });
+
+  const { data: aboutData } = await client.query({
+    query: GET_ABOUT,
+  });
+
+  return {
+    props: {
+      membersData,
+      aboutData,
+    },
+  };
 }

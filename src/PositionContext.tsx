@@ -8,6 +8,7 @@ interface Position {
   rotate: number;
   opacity: number;
 }
+
 interface stagePositions {
   logo: Position;
   line: Position;
@@ -17,9 +18,12 @@ interface stagePositions {
   green: Position;
   pink: Position;
 }
+
 interface PositionContextType {
   lastPosition: stagePositions | null;
   setLastPosition: (position: stagePositions | null) => void;
+  homeMode: string;
+  setHomeMode: (mode: string) => void;
 }
 
 const PositionContext = createContext<PositionContextType | undefined>(
@@ -42,9 +46,12 @@ export const PositionProvider: React.FC<PositionProviderProps> = ({
   children,
 }) => {
   const [lastPosition, setLastPosition] = useState<stagePositions | null>(null);
+  const [homeMode, setHomeMode] = useState<string>('initial'); // can be 'initial', 'default', 'landing'
 
   return (
-    <PositionContext.Provider value={{ lastPosition, setLastPosition }}>
+    <PositionContext.Provider
+      value={{ lastPosition, setLastPosition, homeMode, setHomeMode }}
+    >
       {children}
     </PositionContext.Provider>
   );

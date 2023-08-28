@@ -1,14 +1,18 @@
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import client from '@/lib/apolloClient';
 
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
 import { usePosition } from '@/PositionContext';
 
-import Asterisk from '~/svg/asterisk.svg';
+import { GET_PAGE_DATA, GET_PROJECTS } from '../queries/projectsQueries';
 
 interface Position {
   x: string;
@@ -27,9 +31,42 @@ interface stagePositions {
   green: Position;
   pink: Position;
 }
+interface ProjectNode {
+  node: {
+    id: string;
+    title: string;
+    uri: string;
+    projectFields: {
+      info: string;
+      coverInfo: string;
+      type: string;
+      description: string;
+    };
+    featuredImage: {
+      node: {
+        mediaItemUrl: string;
+      };
+    };
+  };
+}
+interface ProjectsData {
+  projects: {
+    edges: ProjectNode[];
+  };
+}
+interface PageData {
+  pageBy: {
+    featuredImage: {
+      node: {
+        mediaItemUrl: string;
+      };
+    };
+  };
+}
+
 const initialPositions: stagePositions = {
   logo: {
-    x: '6vw',
+    x: '2vw',
     y: '-10vh',
     width: '18vw',
     height: 'fit-content',
@@ -37,15 +74,15 @@ const initialPositions: stagePositions = {
     rotate: 0,
   },
   line: {
-    x: '13vw',
+    x: '3vw',
     y: '-10vh',
-    width: '1vw',
+    width: '17vw',
     height: '3.5rem',
     opacity: 0,
     rotate: 0,
   },
   menu: {
-    x: '18vw',
+    x: '3vw',
     y: '-10vh',
     width: '42vw',
     height: 'fit-content',
@@ -88,7 +125,7 @@ const initialPositions: stagePositions = {
 const stagePositions: { [key: string]: stagePositions } = {
   firstPositions: {
     logo: {
-      x: '6vw',
+      x: '2vw',
       y: '0vh',
       width: '18vw',
       height: 'fit-content',
@@ -96,65 +133,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       rotate: 0,
     },
     line: {
-      x: '13vw',
-      y: '0vh',
-      width: '1vw',
-      height: '3.5rem',
-      opacity: 1,
-      rotate: 0,
-    },
-    menu: {
-      x: '18vw',
-      y: '0vh',
-      width: '42vw',
-      height: 'fit-content',
-      opacity: 1,
-      rotate: 0,
-    },
-    blue: {
-      x: 'calc( -50vw + 9rem )',
-      y: 'calc( -50vh + 8.5rem )',
-      width: '2.5vw',
-      height: '2.5vw',
-      opacity: 0.4,
-      rotate: -50,
-    },
-    yellow: {
-      x: 'calc( -50vw + 7.8rem )',
-      y: 'calc( -50vh + 8.3rem )',
-      width: '2vw',
-      height: '2vw',
-      opacity: 0.4,
-      rotate: -90,
-    },
-    green: {
-      x: 'calc( -50vw + 9rem )',
-      y: 'calc( -50vh + 9.5rem )',
-      width: '2.3vw',
-      height: '2.3vw',
-      opacity: 0.4,
-      rotate: 270,
-    },
-    pink: {
-      x: 'calc( -50vw + 8.1rem )',
-      y: 'calc( -50vh + 9.2rem )',
-      width: '2.3vw',
-      height: '2.3vw',
-      opacity: 0.4,
-      rotate: 280,
-    },
-  },
-  defaultPositions: {
-    logo: {
-      x: '0vw',
-      y: '0vh',
-      width: '18vw',
-      height: 'fit-content',
-      opacity: 1,
-      rotate: 0,
-    },
-    line: {
-      x: '0vw',
+      x: '3vw',
       y: '0vh',
       width: '17vw',
       height: '3.5rem',
@@ -162,44 +141,44 @@ const stagePositions: { [key: string]: stagePositions } = {
       rotate: 0,
     },
     menu: {
-      x: '0vw',
+      x: '3vw',
       y: '0vh',
-      width: '45vw',
+      width: '42vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
     },
     blue: {
-      x: '26vw',
-      y: '-11vh',
-      width: '24vw',
-      height: '24vw',
-      opacity: 0.4,
-      rotate: 6,
+      x: 'calc( -50vw + 9.2rem )',
+      y: 'calc( -50vh + 8.2rem )',
+      width: '2.5vw',
+      height: '2.5vw',
+      opacity: 0,
+      rotate: -360,
     },
     yellow: {
-      x: '-24vw',
-      y: '14vh',
-      width: '19vw',
-      height: '19vw',
-      opacity: 0.4,
-      rotate: -40,
+      x: 'calc( -50vw + 8rem )',
+      y: 'calc( -50vh + 8rem )',
+      width: '2vw',
+      height: '2vw',
+      opacity: 0,
+      rotate: -340,
     },
     green: {
-      x: '5vw',
-      y: '23vh',
-      width: '18vw',
-      height: '18vw',
-      opacity: 0.4,
-      rotate: 160,
+      x: 'calc( -50vw + 9.2rem )',
+      y: 'calc( -50vh + 9.3rem )',
+      width: '2.3vw',
+      height: '2.3vw',
+      opacity: 0,
+      rotate: -80,
     },
     pink: {
-      x: '-11vw',
-      y: '-14vh',
-      width: '22vw',
-      height: '22vw',
-      opacity: 0.4,
-      rotate: -18,
+      x: 'calc( -50vw + 7.8rem )',
+      y: 'calc( -50vh + 8.8rem )',
+      width: '2.3vw',
+      height: '2.3vw',
+      opacity: 0,
+      rotate: 410,
     },
   },
   blue: {
@@ -435,10 +414,36 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
   },
 };
+const heroComponent = {
+  hidden: { opacity: 0 },
+  enter: {
+    opacity: 1,
+    transition: { ease: 'easeOut', duration: 1.5 },
+  },
+  exit: {
+    opacity: 0,
+    transition: { ease: 'easeIn', duration: 0.3 },
+  },
+};
+const mainComponent = {
+  hidden: { opacity: 0, x: -100, y: 0 },
+  enter: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    transition: { ease: 'easeOut', duration: 1.5 },
+  },
+  exit: {
+    opacity: 0,
+    x: 100,
+    y: 0,
+    transition: { ease: 'easeOut', duration: 0.25 },
+  },
+};
+
 interface stageStyles {
   element: string;
 }
-
 const stageStyles: { [key: string]: stageStyles } = {
   firstPositions: {
     element: ' ',
@@ -460,67 +465,39 @@ const stageStyles: { [key: string]: stageStyles } = {
   },
 };
 
-const mainComponent = {
-  hidden: { opacity: 0, x: -100, y: 0 },
-  enter: {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    transition: { ease: 'easeOut', duration: 1.5 },
-  },
-  exit: {
-    opacity: 0,
-    x: 100,
-    y: 0,
-    transition: { ease: 'easeOut', duration: 0.5 },
-  },
-};
+interface projectsProps {
+  AllProjects: ProjectsData;
+  pageData: PageData;
+}
 
-export default function Contact() {
+export default function About({ AllProjects, pageData }: projectsProps) {
   const { lastPosition, setLastPosition } = usePosition();
   const { setHomeMode } = usePosition();
   const router = useRouter();
 
   const dynamicInitials = lastPosition ? lastPosition : initialPositions;
 
-  const [positions] = useState<stagePositions>(
+  const [positions, setPositions] = useState<stagePositions>(
     stagePositions['firstPositions']
   );
-
-  const [result, setResult] = useState('');
 
   useEffect(() => {
     setLastPosition(positions);
   }, [positions, setLastPosition]);
 
-  const handleShapeClick = () => {
-    setHomeMode('default');
-    router.push('/');
+  const handleShapeClick = (shape: string) => {
+    if (positions === stagePositions[shape]) {
+      setPositions(stagePositions['defaultPositions']);
+      setStyles(stageStyles['defaultPositions']);
+    } else {
+      setPositions(stagePositions[shape]);
+      setStyles(stageStyles[shape]);
+    }
   };
+
   const handleLogoClick = () => {
     setHomeMode('landing');
     router.push('/');
-  };
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-    event.preventDefault();
-    setResult('Sending....');
-    const formData = new FormData(event.target as HTMLFormElement);
-
-    formData.append('access_key', 'c6b542e4-bc5d-4ec0-ad2f-95b4623a58f1');
-
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      body: formData,
-    }).then((res) => res.json());
-
-    if (res.success) {
-      // console.log("Success", res);
-      setResult(res.message);
-    } else {
-      // console.log("Error", res);
-      setResult(res.message);
-    }
   };
 
   // TODO - remove no-unused-vars below when use implemented
@@ -533,119 +510,107 @@ export default function Contact() {
     <Layout
       positions={positions}
       initialPositions={dynamicInitials}
+      brightHeader
       handleShapeClick={handleShapeClick}
       handleLogoClick={handleLogoClick}
     >
-      <Seo templateTitle='Contact' />
+      <Seo templateTitle='Projects' />
 
       <main>
-        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-80  text-center'>
+        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent text-center'>
+          {/* Hero Image */}
           <motion.div
-            className='pointer-events-auto flex w-full flex-col gap-28 bg-transparent px-32 pb-28'
+            className='pointer-events-auto relative flex h-[40vw] w-full flex-col gap-28 bg-stone-400 px-32 pb-28 '
             style={{}}
-            key='contact-page'
+            key='hero'
+            variants={heroComponent}
+            initial='hidden'
+            animate='enter'
+            exit='exit'
+          >
+            {pageData.pageBy.featuredImage.node.mediaItemUrl && (
+              <Image
+                src={pageData.pageBy.featuredImage.node.mediaItemUrl}
+                fill
+                sizes='100vw'
+                quality={98}
+                alt='Hero Image'
+                style={{ objectFit: 'cover', objectPosition: '50% 40%' }}
+              />
+            )}
+          </motion.div>
+
+          {/* Projects Index */}
+          <motion.div
+            className='pointer-events-auto mt-20 grid w-full grid-cols-4 gap-8 bg-transparent px-32 pb-28 '
+            style={{}}
+            key='projects'
             variants={mainComponent}
             initial='hidden'
             animate='enter'
             exit='exit'
           >
-            {/* Contact Form */}
-            <form
-              onSubmit={handleSubmit}
-              className='flex w-full justify-between gap-48 text-left'
-            >
-              <div className='flex w-1/3 flex-col gap-12'>
-                {/* TODO create proper submit results window */}
-                <p>{result}</p>
+            {AllProjects.projects.edges.map((project: ProjectNode) => (
+              // Project Card
+              <Link
+                href={project.node.uri}
+                key={project.node.id}
+                className='text-customGray group relative flex flex-col items-center justify-start text-center'
+              >
+                {/* Project Image */}
+                <div className=' relative aspect-square w-full bg-stone-300'>
+                  {project.node.featuredImage.node.mediaItemUrl && (
+                    <Image
+                      src={project.node.featuredImage.node.mediaItemUrl}
+                      fill
+                      sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                      quality={98}
+                      alt={project.node.title}
+                      style={{
+                        objectFit: 'cover',
+                        objectPosition: 'center center',
+                      }}
+                    />
+                  )}
+                </div>
 
-                <div className='flex w-full flex-col'>
-                  <label
-                    htmlFor='name'
-                    className='text-customGray w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
-                  >
-                    Name
-                  </label>
-                  <input
-                    id='name'
-                    name='name'
-                    type='text'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
+                {/* Overlay */}
+                <div className='absolute aspect-square w-full bg-black opacity-0 transition duration-300 group-hover:opacity-10' />
+
+                {/* Project Info */}
+                <div className='absolute flex aspect-square w-full flex-col justify-between p-10 opacity-0 transition duration-300 group-hover:opacity-100'>
+                  <h2 className='text-left text-5xl font-bold text-white'>
+                    {project.node.title}
+                  </h2>
+                  <div
+                    className='text-left text-xl font-extralight text-white'
+                    dangerouslySetInnerHTML={{
+                      __html: project.node.projectFields.info,
+                    }}
                   />
                 </div>
-
-                <div className='flex w-full flex-col'>
-                  <label
-                    htmlFor='email'
-                    className='text-customGray  w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
-                  >
-                    Email
-                  </label>
-                  <input
-                    id='email'
-                    name='email'
-                    type='email'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
-                  />
-                </div>
-
-                <div className='flex w-full flex-col'>
-                  <label
-                    htmlFor='location'
-                    className='text-customGray  w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
-                  >
-                    Location
-                  </label>
-                  <input
-                    id='location'
-                    name='location'
-                    type='text'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
-                  />
-                </div>
-              </div>
-
-              <div className='flex w-2/3 flex-col'>
-                <div className='flex w-full flex-grow flex-col'>
-                  <label
-                    htmlFor='message'
-                    className='text-customGray h-fit w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
-                  >
-                    Your Message
-                  </label>
-                  <textarea
-                    id='message'
-                    name='message'
-                    className='customGray flex-grow border-0 border-b border-neutral-500 py-8 text-3xl focus:border-neutral-500 focus:ring-0'
-                    required
-                  ></textarea>
-                </div>
-
-                <button
-                  type='submit'
-                  className='mt-36 h-24 rounded-full bg-gradient-to-r from-blue-400 to-pink-300 text-4xl font-bold text-white'
-                >
-                  Send
-                </button>
-              </div>
-            </form>
-
-            {/* Job Opportunities Banner */}
-            <a
-              href='mailto:Jobs@Momentstudio.com'
-              className='bg-customBlue flex w-full items-center justify-around rounded-full'
-            >
-              <Asterisk className='h-8 w-8' />
-
-              <p className='w-fit p-24 text-[2.5rem] font-light leading-normal text-white'>
-                For Job Opportunities please contact <br />
-                via Jobs@Momentstudio.com
-              </p>
-
-              <Asterisk className='h-8 w-8' />
-            </a>
+              </Link>
+            ))}
           </motion.div>
         </section>
       </main>
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const { data: AllProjects } = await client.query({
+    query: GET_PROJECTS,
+  });
+
+  const { data: pageData } = await client.query({
+    query: GET_PAGE_DATA,
+  });
+
+  return {
+    props: {
+      AllProjects,
+      pageData,
+    },
+  };
 }
