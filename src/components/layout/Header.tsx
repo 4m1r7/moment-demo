@@ -36,6 +36,7 @@ export default function Header({
   handleLogoClick,
 }: shapeProps) {
   const router = useRouter();
+  const currentPage = router.pathname;
 
   return (
     <header className='pointer-events-none absolute left-0 top-0 flex h-fit w-full items-center justify-start gap-24 p-28'>
@@ -79,7 +80,7 @@ export default function Header({
 
       <motion.ul
         className={` pointer-events-auto flex h-full w-full items-center justify-between text-4xl font-thin
-                    ${brightHeader ? 'text-white' : 'text-gray-500'}`}
+                    ${brightHeader ? 'text-white' : 'text-customGray'}`}
         style={{}}
         key='menu'
         initial={initialPositions.menu}
@@ -90,15 +91,52 @@ export default function Header({
           // delay: .5,
         }}
       >
-        <li className={router.pathname == '/projects' ? 'font-bold' : ''}>
+        <motion.li
+          key='projects'
+          initial=''
+          animate={
+            currentPage == '/projects'
+              ? { fontWeight: 600 }
+              : { fontWeight: 150 }
+          }
+          transition={{
+            ease: 'easeOut',
+            duration: 0.5,
+            delay: 0.6,
+          }}
+        >
           <Link href='/projects'>Projects</Link>
-        </li>
-        <li className={router.pathname == '/about' ? 'font-bold' : ''}>
+        </motion.li>
+        <motion.li
+          key='about'
+          initial=''
+          animate={
+            currentPage == '/about' ? { fontWeight: 600 } : { fontWeight: 150 }
+          }
+          transition={{
+            ease: 'easeOut',
+            duration: 0.5,
+            delay: 0.6,
+          }}
+        >
           <Link href='/about'>About</Link>
-        </li>
-        <li className={router.pathname == '/contact' ? 'font-semibold' : ''}>
+        </motion.li>
+        <motion.li
+          key='contact'
+          initial=''
+          animate={
+            currentPage == '/contact'
+              ? { fontWeight: 600 }
+              : { fontWeight: 150 }
+          }
+          transition={{
+            ease: 'easeOut',
+            duration: 0.5,
+            delay: 0.6,
+          }}
+        >
           <Link href='/contact'>Contact</Link>
-        </li>
+        </motion.li>
       </motion.ul>
     </header>
   );

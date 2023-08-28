@@ -11,8 +11,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
 import { usePosition } from '@/PositionContext';
-
-import { GET_PAGE_DATA, GET_PROJECTS } from '../queries/projectsQueries';
+import { GET_PAGE_DATA, GET_PROJECTS } from '@/queries/projectsQueries';
 
 interface Position {
   x: string;
@@ -37,14 +36,12 @@ interface ProjectNode {
     title: string;
     uri: string;
     projectFields: {
-      info: string;
       coverInfo: string;
       type: string;
-      description: string;
     };
     featuredImage: {
       node: {
-        mediaItemUrl: string;
+        sourceUrl: string;
       };
     };
   };
@@ -418,7 +415,7 @@ const heroComponent = {
   hidden: { opacity: 0 },
   enter: {
     opacity: 1,
-    transition: { ease: 'easeOut', duration: 1.5 },
+    transition: { ease: 'easeIn', duration: 0.6 },
   },
   exit: {
     opacity: 0,
@@ -441,36 +438,12 @@ const mainComponent = {
   },
 };
 
-interface stageStyles {
-  element: string;
-}
-const stageStyles: { [key: string]: stageStyles } = {
-  firstPositions: {
-    element: ' ',
-  },
-  defaultPositions: {
-    element: ' ',
-  },
-  blue: {
-    element: ' ',
-  },
-  yellow: {
-    element: ' ',
-  },
-  green: {
-    element: ' ',
-  },
-  pink: {
-    element: ' ',
-  },
-};
-
 interface projectsProps {
   AllProjects: ProjectsData;
   pageData: PageData;
 }
 
-export default function About({ AllProjects, pageData }: projectsProps) {
+export default function Projects({ AllProjects, pageData }: projectsProps) {
   const { lastPosition, setLastPosition } = usePosition();
   const { setHomeMode } = usePosition();
   const router = useRouter();
@@ -488,10 +461,8 @@ export default function About({ AllProjects, pageData }: projectsProps) {
   const handleShapeClick = (shape: string) => {
     if (positions === stagePositions[shape]) {
       setPositions(stagePositions['defaultPositions']);
-      setStyles(stageStyles['defaultPositions']);
     } else {
       setPositions(stagePositions[shape]);
-      setStyles(stageStyles[shape]);
     }
   };
 
@@ -499,12 +470,6 @@ export default function About({ AllProjects, pageData }: projectsProps) {
     setHomeMode('landing');
     router.push('/');
   };
-
-  // TODO - remove no-unused-vars below when use implemented
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars
-  const [styles, setStyles] = useState<stageStyles>(
-    stageStyles['firstPositions']
-  );
 
   return (
     <Layout
@@ -559,9 +524,9 @@ export default function About({ AllProjects, pageData }: projectsProps) {
               >
                 {/* Project Image */}
                 <div className=' relative aspect-square w-full bg-stone-300'>
-                  {project.node.featuredImage.node.mediaItemUrl && (
+                  {project.node.featuredImage.node.sourceUrl && (
                     <Image
-                      src={project.node.featuredImage.node.mediaItemUrl}
+                      src={project.node.featuredImage.node.sourceUrl}
                       fill
                       sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
                       quality={98}
@@ -585,7 +550,7 @@ export default function About({ AllProjects, pageData }: projectsProps) {
                   <div
                     className='text-left text-xl font-extralight text-white'
                     dangerouslySetInnerHTML={{
-                      __html: project.node.projectFields.info,
+                      __html: project.node.projectFields.coverInfo,
                     }}
                   />
                 </div>

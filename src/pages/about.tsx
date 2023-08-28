@@ -10,8 +10,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
 import { usePosition } from '@/PositionContext';
-
-import { GET_ABOUT, GET_MEMBERS } from '../queries/aboutQueries';
+import { GET_ABOUT, GET_MEMBERS } from '@/queries/aboutQueries';
 
 interface Position {
   x: string;
@@ -428,30 +427,6 @@ const mainComponent = {
   },
 };
 
-interface stageStyles {
-  element: string;
-}
-const stageStyles: { [key: string]: stageStyles } = {
-  firstPositions: {
-    element: ' ',
-  },
-  defaultPositions: {
-    element: ' ',
-  },
-  blue: {
-    element: ' ',
-  },
-  yellow: {
-    element: ' ',
-  },
-  green: {
-    element: ' ',
-  },
-  pink: {
-    element: ' ',
-  },
-};
-
 interface AboutProps {
   aboutData: PageData;
   membersData: MembersData;
@@ -475,10 +450,8 @@ export default function About({ aboutData, membersData }: AboutProps) {
   const handleShapeClick = (shape: string) => {
     if (positions === stagePositions[shape]) {
       setPositions(stagePositions['defaultPositions']);
-      setStyles(stageStyles['defaultPositions']);
     } else {
       setPositions(stagePositions[shape]);
-      setStyles(stageStyles[shape]);
     }
   };
 
@@ -489,12 +462,6 @@ export default function About({ aboutData, membersData }: AboutProps) {
 
   const prevMembers = membersData.members.edges.filter(
     (member: MemberNode) => member.node.memberFields.exMember
-  );
-
-  // TODO - remove no-unused-vars below when use implemented
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars
-  const [styles, setStyles] = useState<stageStyles>(
-    stageStyles['firstPositions']
   );
 
   return (
