@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import React from 'react';
 
@@ -18,7 +19,13 @@ export default function ImageModal({
   onNext,
 }: ImageModalProps) {
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-between gap-28 bg-white p-40'>
+    <motion.div
+      key='modal'
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className='fixed inset-0 z-50 flex items-center justify-between gap-28 bg-white p-40'
+    >
       <Close
         className=' absolute right-40 top-40 h-11 w-11 cursor-pointer '
         onClick={onClose}
@@ -45,6 +52,6 @@ export default function ImageModal({
         className='top-1/2 h-10 w-10 -translate-y-1/2 transform cursor-pointer'
         onClick={onNext}
       />
-    </div>
+    </motion.div>
   );
 }

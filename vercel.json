@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "/fonts/inter-var-latin.woff2",
+      "source": "/fonts/inter-var-latin.woff2 TODO",
       "headers": [
         {
           "key": "Cache-Control",
