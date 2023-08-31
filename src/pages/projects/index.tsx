@@ -450,7 +450,7 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
 
   const dynamicInitials = lastPosition ? lastPosition : initialPositions;
 
-  const [positions, setPositions] = useState<stagePositions>(
+  const [positions] = useState<stagePositions>(
     stagePositions['firstPositions']
   );
 
@@ -458,12 +458,9 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
     setLastPosition(positions);
   }, [positions, setLastPosition]);
 
-  const handleShapeClick = (shape: string) => {
-    if (positions === stagePositions[shape]) {
-      setPositions(stagePositions['defaultPositions']);
-    } else {
-      setPositions(stagePositions[shape]);
-    }
+  const handleShapeClick = () => {
+    setHomeMode('default');
+    router.push('/');
   };
 
   const handleLogoClick = () => {

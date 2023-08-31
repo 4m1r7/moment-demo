@@ -27,6 +27,7 @@ interface LayoutProps {
   initialPositions: stagePositions;
   brightHeader?: boolean;
   noFooter?: boolean;
+  activeShape?: string | null;
   handleShapeClick: (shape: string) => void;
   handleLogoClick: () => void;
 }
@@ -37,6 +38,7 @@ export default function Layout({
   initialPositions,
   brightHeader,
   noFooter,
+  activeShape,
   handleShapeClick,
   handleLogoClick,
 }: LayoutProps) {
@@ -44,6 +46,7 @@ export default function Layout({
     <>
       {children}
       <Shapes
+        activeShape={activeShape}
         positions={positions}
         initialPositions={initialPositions}
         handleShapeClick={handleShapeClick}

@@ -435,30 +435,6 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
   },
 };
-interface stageStyles {
-  element: string;
-}
-
-const stageStyles: { [key: string]: stageStyles } = {
-  firstPositions: {
-    element: ' ',
-  },
-  defaultPositions: {
-    element: ' ',
-  },
-  blue: {
-    element: ' ',
-  },
-  yellow: {
-    element: ' ',
-  },
-  green: {
-    element: ' ',
-  },
-  pink: {
-    element: ' ',
-  },
-};
 
 const mainComponent = {
   hidden: { opacity: 0, x: -100, y: 0 },
@@ -522,12 +498,6 @@ export default function Contact() {
       setResult(res.message);
     }
   };
-
-  // TODO - remove no-unused-vars below when use implemented
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars
-  const [styles, setStyles] = useState<stageStyles>(
-    stageStyles['firstPositions']
-  );
 
   return (
     <Layout

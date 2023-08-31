@@ -1,3 +1,5 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -433,30 +435,6 @@ const stagePositions: { [key: string]: stagePositions } = {
   },
 };
 
-interface stageStyles {
-  element: string;
-}
-const stageStyles: { [key: string]: stageStyles } = {
-  firstPositions: {
-    element: ' ',
-  },
-  defaultPositions: {
-    element: ' ',
-  },
-  blue: {
-    element: ' ',
-  },
-  yellow: {
-    element: ' ',
-  },
-  green: {
-    element: ' ',
-  },
-  pink: {
-    element: ' ',
-  },
-};
-
 export default function Home() {
   const [showDefaultMode, setShowDefaultMode] = useState(true);
 
@@ -467,28 +445,23 @@ export default function Home() {
   const [positions, setPositions] = useState<stagePositions>(
     stagePositions['firstPositions']
   );
+  const [activeShape, setActiveShape] = useState<string | null>(null);
 
   useEffect(() => {
     setLastPosition(positions);
   }, [positions, setLastPosition]);
 
-  // TODO - remove no-unused-vars below when use implemented
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars
-  const [styles, setStyles] = useState<stageStyles>(
-    stageStyles['firstPositions']
-  );
-
   const handleShapeClick = (shape: string) => {
     if (showDefaultMode) {
       setPositions(stagePositions['defaultPositions']);
-      setStyles(stageStyles['defaultPositions']);
       setShowDefaultMode(false);
+      setActiveShape(null);
     } else if (positions === stagePositions[shape]) {
       setPositions(stagePositions['defaultPositions']);
-      setStyles(stageStyles['defaultPositions']);
+      setActiveShape(null);
     } else {
       setPositions(stagePositions[shape]);
-      setStyles(stageStyles[shape]);
+      setActiveShape(shape);
     }
   };
   const handleLogoClick = () => {
@@ -498,6 +471,7 @@ export default function Home() {
 
   return (
     <Layout
+      activeShape={activeShape}
       positions={positions}
       initialPositions={dynamicInitials}
       handleShapeClick={handleShapeClick}
@@ -506,7 +480,193 @@ export default function Home() {
     >
       <Seo templateTitle='Home' />
 
-      <main></main>
+      <AnimatePresence>
+        <main
+          key={activeShape}
+          className=' items-between pointer-events-none  absolute top-0 z-0 flex h-screen w-full flex-col justify-center overflow-hidden'
+        >
+          {/* Project Photo */}
+          {activeShape == 'blue' && (
+            <motion.div
+              className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+              style={{}}
+              key='blue-project'
+              initial={{
+                x: '4vw',
+                y: '8vh',
+                width: '58vw',
+                height: '58vw',
+                opacity: 0,
+                rotate: -130,
+              }}
+              animate={{
+                x: '14vw',
+                y: '8vh',
+                width: '58vw',
+                height: '58vw',
+                opacity: 1,
+                rotate: -130,
+              }}
+              exit={{
+                x: '24vw',
+                y: '8vh',
+                width: '58vw',
+                height: '58vw',
+                opacity: 0,
+                rotate: -130,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <Image
+                className='h-full w-full'
+                src='/images/blue-project.png'
+                fill
+                quality={100}
+                style={{ objectFit: 'contain' }}
+                alt=''
+              />
+            </motion.div>
+          )}
+
+          {activeShape == 'yellow' && (
+            <motion.div
+              className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+              style={{}}
+              key='blue-project'
+              initial={{
+                x: '-33vw',
+                y: '5vh',
+                width: '43vw',
+                height: '43vw',
+                opacity: 0,
+                rotate: -20,
+              }}
+              animate={{
+                x: '-23vw',
+                y: '5vh',
+                width: '43vw',
+                height: '43vw',
+                opacity: 1,
+                rotate: -20,
+              }}
+              exit={{
+                x: '-3vw',
+                y: '5vh',
+                width: '43vw',
+                height: '43vw',
+                opacity: 0,
+                rotate: -20,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <Image
+                className='h-full w-full'
+                src='/images/yellow-project.png'
+                fill
+                quality={100}
+                style={{ objectFit: 'contain' }}
+                alt=''
+              />
+            </motion.div>
+          )}
+
+          {activeShape == 'green' && (
+            <motion.div
+              className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+              style={{}}
+              key='blue-project'
+              initial={{
+                x: '5vw',
+                y: '3vh',
+                width: '51vw',
+                height: '51vw',
+                opacity: 0,
+                rotate: 55,
+              }}
+              animate={{
+                x: '15vw',
+                y: '3vh',
+                width: '51vw',
+                height: '51vw',
+                opacity: 1,
+                rotate: 55,
+              }}
+              exit={{
+                x: '25vw',
+                y: '3vh',
+                width: '51vw',
+                height: '51vw',
+                opacity: 0,
+                rotate: 55,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <Image
+                className='h-full w-full'
+                src='/images/green-project.png'
+                fill
+                quality={100}
+                style={{ objectFit: 'contain' }}
+                alt=''
+              />
+            </motion.div>
+          )}
+
+          {activeShape == 'pink' && (
+            <motion.div
+              className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+              style={{}}
+              key='blue-project'
+              initial={{
+                x: '0vw',
+                y: '-2vh',
+                width: '59vw',
+                height: '59vw',
+                opacity: 0,
+                rotate: -70,
+              }}
+              animate={{
+                x: '10vw',
+                y: '-2vh',
+                width: '59vw',
+                height: '59vw',
+                opacity: 1,
+                rotate: -70,
+              }}
+              exit={{
+                x: '20vw',
+                y: '-2vh',
+                width: '59vw',
+                height: '59vw',
+                opacity: 0,
+                rotate: -70,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <Image
+                className='h-full w-full'
+                src='/images/pink-project-.png'
+                fill
+                quality={100}
+                style={{ objectFit: 'contain' }}
+                alt=''
+              />
+            </motion.div>
+          )}
+        </main>
+      </AnimatePresence>
     </Layout>
   );
 }
