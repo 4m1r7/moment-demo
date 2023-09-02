@@ -46,7 +46,7 @@ export const PositionProvider: React.FC<PositionProviderProps> = ({
   children,
 }) => {
   const [lastPosition, setLastPosition] = useState<stagePositions | null>(null);
-  const [homeMode, setHomeMode] = useState<string>('initial'); // can be 'initial', 'default', 'landing'
+  const [homeMode, setHomeMode] = useState<string>('goInitial'); // can be 'goInitial', 'goDefault', 'goLanding'
 
   return (
     <PositionContext.Provider

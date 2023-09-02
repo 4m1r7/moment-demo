@@ -439,7 +439,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
 
   const dynamicInitials = lastPosition ? lastPosition : initialPositions;
 
-  const [positions, setPositions] = useState<stagePositions>(
+  const [positions] = useState<stagePositions>(
     stagePositions['firstPositions']
   );
 
@@ -447,16 +447,12 @@ export default function About({ aboutData, membersData }: AboutProps) {
     setLastPosition(positions);
   }, [positions, setLastPosition]);
 
-  const handleShapeClick = (shape: string) => {
-    if (positions === stagePositions[shape]) {
-      setPositions(stagePositions['defaultPositions']);
-    } else {
-      setPositions(stagePositions[shape]);
-    }
+  const handleShapeClick = () => {
+    setHomeMode('goDefault');
+    router.push('/');
   };
-
   const handleLogoClick = () => {
-    setHomeMode('landing');
+    setHomeMode('goLanding');
     router.push('/');
   };
 

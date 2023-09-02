@@ -26,6 +26,7 @@ interface shapeProps {
   positions: stagePositions;
   initialPositions: stagePositions;
   brightHeader?: boolean;
+  landingMode?: boolean;
   handleLogoClick: () => void;
 }
 
@@ -33,6 +34,7 @@ export default function Header({
   positions,
   initialPositions,
   brightHeader,
+  landingMode,
   handleLogoClick,
 }: shapeProps) {
   const router = useRouter();
@@ -54,17 +56,20 @@ export default function Header({
         onClick={handleLogoClick}
       >
         <Logo
-          className={`h-28 w-full cursor-pointer
+          className={`h-full w-full cursor-pointer
                       ${brightHeader ? 'bright-logo' : ''}`}
         />
       </motion.div>
 
       <motion.div
-        className=' pointer-events-auto ml-[28rem] flex items-center justify-center '
+        className=' pointer-events-auto flex items-center justify-center '
         style={{}}
         key='line'
-        initial={initialPositions.line}
-        animate={positions.line}
+        initial={{ ...initialPositions.line, marginLeft: '28rem' }}
+        animate={{
+          ...positions.line,
+          marginLeft: landingMode ? '0rem' : '28rem',
+        }}
         transition={{
           ease: 'easeInOut',
           duration: 1.5,

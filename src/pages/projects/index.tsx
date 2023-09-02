@@ -459,12 +459,12 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
   }, [positions, setLastPosition]);
 
   const handleShapeClick = () => {
-    setHomeMode('default');
+    setHomeMode('goDefault');
     router.push('/');
   };
 
   const handleLogoClick = () => {
-    setHomeMode('landing');
+    setHomeMode('goLanding');
     router.push('/');
   };
 

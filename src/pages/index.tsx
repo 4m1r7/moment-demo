@@ -84,6 +84,64 @@ const initialPositions: stagePositions = {
     rotate: 0,
   },
 };
+const landingPositions: stagePositions = {
+  logo: {
+    x: '3vw',
+    y: '-58vh',
+    width: '83vw',
+    height: '',
+    opacity: 0.5,
+    rotate: 0,
+  },
+  line: {
+    x: '44vw',
+    y: '5vh',
+    width: '1vw',
+    height: '83vw',
+    opacity: 1,
+    rotate: 90,
+  },
+  menu: {
+    x: '-3vw',
+    y: '10vh',
+    width: '83vw',
+    height: 'fit-content',
+    opacity: 1,
+    rotate: 0,
+  },
+  blue: {
+    x: '33vw',
+    y: '10vh',
+    width: '23vw',
+    height: '23vw',
+    opacity: 0.4,
+    rotate: 65,
+  },
+  yellow: {
+    x: '-37vw',
+    y: '12vh',
+    width: '15vw',
+    height: '15vw',
+    opacity: 0.4,
+    rotate: -35,
+  },
+  green: {
+    x: '8vw',
+    y: '-6vh',
+    width: '35vw',
+    height: '35vw',
+    opacity: 0.4,
+    rotate: 145,
+  },
+  pink: {
+    x: '-16vw',
+    y: '16vh',
+    width: '33vw',
+    height: '33vw',
+    opacity: 0.4,
+    rotate: -75,
+  },
+};
 const stagePositions: { [key: string]: stagePositions } = {
   firstPositions: {
     logo: {
@@ -438,12 +496,15 @@ const stagePositions: { [key: string]: stagePositions } = {
 export default function Home() {
   const [showDefaultMode, setShowDefaultMode] = useState(true);
 
-  const { lastPosition, setLastPosition } = usePosition();
+  const { lastPosition, setLastPosition, homeMode, setHomeMode } =
+    usePosition();
 
   const dynamicInitials = lastPosition ? lastPosition : initialPositions;
 
   const [positions, setPositions] = useState<stagePositions>(
-    stagePositions['firstPositions']
+    homeMode == 'goLanding'
+      ? landingPositions
+      : stagePositions['firstPositions']
   );
   const [activeShape, setActiveShape] = useState<string | null>(null);
 
@@ -451,10 +512,18 @@ export default function Home() {
     setLastPosition(positions);
   }, [positions, setLastPosition]);
 
+  useEffect(() => {
+    if (homeMode == 'goLanding') {
+      setHomeMode('goDefault');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleShapeClick = (shape: string) => {
-    if (showDefaultMode) {
+    if (showDefaultMode || homeMode == 'goDefault') {
       setPositions(stagePositions['defaultPositions']);
       setShowDefaultMode(false);
+      setHomeMode('goLanding');
       setActiveShape(null);
     } else if (positions === stagePositions[shape]) {
       setPositions(stagePositions['defaultPositions']);
@@ -464,9 +533,18 @@ export default function Home() {
       setActiveShape(shape);
     }
   };
+
   const handleLogoClick = () => {
-    // TODO handle logo click in Home
-    setShowDefaultMode(false);
+    if (homeMode == 'goInitial' || homeMode == 'goLanding') {
+      setPositions(landingPositions);
+      setHomeMode('goDefault');
+      setShowDefaultMode(false);
+      setActiveShape(null);
+    } else if (homeMode == 'goDefault') {
+      setPositions(stagePositions['defaultPositions']);
+      setHomeMode('goLanding');
+      setActiveShape(null);
+    }
   };
 
   return (
@@ -477,6 +555,7 @@ export default function Home() {
       handleShapeClick={handleShapeClick}
       handleLogoClick={handleLogoClick}
       noFooter
+      landingMode={positions == landingPositions}
     >
       <Seo templateTitle='Home' />
 

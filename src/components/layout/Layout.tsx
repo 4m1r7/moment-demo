@@ -27,6 +27,7 @@ interface LayoutProps {
   initialPositions: stagePositions;
   brightHeader?: boolean;
   noFooter?: boolean;
+  landingMode?: boolean;
   activeShape?: string | null;
   handleShapeClick: (shape: string) => void;
   handleLogoClick: () => void;
@@ -39,6 +40,7 @@ export default function Layout({
   brightHeader,
   noFooter,
   activeShape,
+  landingMode,
   handleShapeClick,
   handleLogoClick,
 }: LayoutProps) {
@@ -55,6 +57,7 @@ export default function Layout({
         positions={positions}
         initialPositions={initialPositions}
         brightHeader={brightHeader}
+        landingMode={landingMode}
         handleLogoClick={handleLogoClick}
       />
       {!noFooter && <Footer />}
