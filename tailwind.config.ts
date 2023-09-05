@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        primary: ['Inter', ...defaultTheme.fontFamily.sans],
+        primary: ['Segoe UI', 'Inter', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: {
@@ -24,6 +24,8 @@ export default {
           950: 'rgb(var(--tw-color-primary-950) / <alpha-value>)',
         },
         dark: '#222222',
+        customBlue: '#3C9CD7',
+        customGray: '#808080',
       },
       keyframes: {
         flicker: {

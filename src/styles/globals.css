@@ -29,6 +29,44 @@
 }
 
 @layer base {
+  /* Segoe UI font */
+  @font-face {
+    font-family: 'Segoe UI';
+    src: url('/fonts/SegoeUI.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Segoe UI';
+    src: url('/fonts/SegoeUI-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Segoe UI';
+    src: url('/fonts/SegoeUI-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Segoe UI';
+    src: url('/fonts/SegoeUI-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Segoe UI';
+    src: url('/fonts/SegoeUI-Italic.woff2') format('woff2');
+    font-weight: normal;
+    font-style: italic;
+  }
+  @font-face {
+    font-family: 'Segoe UI';
+    src: url('/fonts/SegoeUI-BoldItalic.woff2') format('woff2');
+    font-weight: bold;
+    font-style: italic;
+  }
+
   /* inter var - latin */
   @font-face {
     font-family: 'Inter';
@@ -134,4 +172,24 @@
   .animated-underline:focus-visible {
     background-size: 0 2px, 100% 2px;
   }
+}
+
+/* CUSTOM GLOBAL STYLES */
+
+/* Logo styles on background */
+.bright-logo {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(5%) saturate(7500%)
+    hue-rotate(36deg) brightness(122%) contrast(100%);
+}
+
+/* cms content styles */
+.cms-content h2 {
+  font-size: 2rem;
+  padding-bottom: 5px;
+}
+.cms-content p {
+  font-size: 1.5rem;
+  line-height: 2.1rem;
+  padding-bottom: 5px;
+  font-weight: 300;
 }

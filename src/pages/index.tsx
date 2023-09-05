@@ -1,15 +1,12 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
-import Blue from '~/svg/blue-shape.svg';
-import Green from '~/svg/green-shape.svg';
-import Logo from '~/svg/logo.svg';
-import Pink from '~/svg/pink-shape.svg';
-import Yellow from '~/svg/yellow-shape.svg';
+import { usePosition } from '@/PositionContext';
 
 interface Position {
   x: string;
@@ -19,21 +16,154 @@ interface Position {
   rotate: number;
   opacity: number;
 }
-
 interface stagePositions {
-  header: Position;
+  logo: Position;
+  line: Position;
+  menu: Position;
   blue: Position;
   yellow: Position;
   green: Position;
   pink: Position;
 }
 
+const initialPositions: stagePositions = {
+  logo: {
+    x: '0vw',
+    y: '-15vh',
+    width: '18vw',
+    height: 'fit-content',
+    opacity: 0,
+    rotate: 0,
+  },
+  line: {
+    x: '0vw',
+    y: '-15vh',
+    width: '1vw',
+    height: '3.5rem',
+    opacity: 0,
+    rotate: 0,
+  },
+  menu: {
+    x: '0vw',
+    y: '-15vh',
+    width: '28vw',
+    height: 'fit-content',
+    opacity: 0,
+    rotate: 0,
+  },
+  blue: {
+    x: '28vw',
+    y: '0vh',
+    width: '17vw',
+    height: '17vw',
+    opacity: 0,
+    rotate: 0,
+  },
+  yellow: {
+    x: '8vw',
+    y: '0vh',
+    width: '12.5vw',
+    height: '12.5vw',
+    opacity: 0,
+    rotate: 0,
+  },
+  green: {
+    x: '-8vw',
+    y: '0vh',
+    width: '14vw',
+    height: '14vw',
+    opacity: 0,
+    rotate: 0,
+  },
+  pink: {
+    x: '-28vw',
+    y: '0vh',
+    width: '14vw',
+    height: '14vw',
+    opacity: 0,
+    rotate: 0,
+  },
+};
+const landingPositions: stagePositions = {
+  logo: {
+    x: '3vw',
+    y: '-58vh',
+    width: '83vw',
+    height: '',
+    opacity: 0.5,
+    rotate: 0,
+  },
+  line: {
+    x: '44vw',
+    y: '5vh',
+    width: '1vw',
+    height: '83vw',
+    opacity: 1,
+    rotate: 90,
+  },
+  menu: {
+    x: '-3vw',
+    y: '10vh',
+    width: '83vw',
+    height: 'fit-content',
+    opacity: 1,
+    rotate: 0,
+  },
+  blue: {
+    x: '33vw',
+    y: '10vh',
+    width: '23vw',
+    height: '23vw',
+    opacity: 0.4,
+    rotate: 65,
+  },
+  yellow: {
+    x: '-37vw',
+    y: '12vh',
+    width: '15vw',
+    height: '15vw',
+    opacity: 0.4,
+    rotate: -35,
+  },
+  green: {
+    x: '8vw',
+    y: '-6vh',
+    width: '35vw',
+    height: '35vw',
+    opacity: 0.4,
+    rotate: 145,
+  },
+  pink: {
+    x: '-16vw',
+    y: '16vh',
+    width: '33vw',
+    height: '33vw',
+    opacity: 0.4,
+    rotate: -75,
+  },
+};
 const stagePositions: { [key: string]: stagePositions } = {
   firstPositions: {
-    header: {
+    logo: {
       x: '0vw',
       y: '0vh',
-      width: '65%',
+      width: '18vw',
+      height: 'fit-content',
+      opacity: 1,
+      rotate: 0,
+    },
+    line: {
+      x: '0vw',
+      y: '0vh',
+      width: '1vw',
+      height: '3.5rem',
+      opacity: 1,
+      rotate: 0,
+    },
+    menu: {
+      x: '0vw',
+      y: '0vh',
+      width: '28vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
@@ -72,10 +202,26 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
   },
   defaultPositions: {
-    header: {
+    logo: {
       x: '0vw',
       y: '0vh',
-      width: '100%',
+      width: '18vw',
+      height: 'fit-content',
+      opacity: 1,
+      rotate: 0,
+    },
+    line: {
+      x: '0vw',
+      y: '0vh',
+      width: '17vw',
+      height: '3.5rem',
+      opacity: 1,
+      rotate: 0,
+    },
+    menu: {
+      x: '0vw',
+      y: '0vh',
+      width: '45vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
@@ -114,10 +260,26 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
   },
   blue: {
-    header: {
+    logo: {
       x: '0vw',
-      y: '75vh',
-      width: '65%',
+      y: '55vh',
+      width: '18vw',
+      height: 'fit-content',
+      opacity: 1,
+      rotate: 0,
+    },
+    line: {
+      x: '-9vw',
+      y: '49vh',
+      width: '1vw',
+      height: '35rem',
+      opacity: 1,
+      rotate: 90,
+    },
+    menu: {
+      x: '-28.4vw',
+      y: '45vh',
+      width: '28.2vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
@@ -156,10 +318,26 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
   },
   yellow: {
-    header: {
+    logo: {
       x: '0vw',
       y: '0vh',
-      width: '65%',
+      width: '18vw',
+      height: 'fit-content',
+      opacity: 1,
+      rotate: 0,
+    },
+    line: {
+      x: '0vw',
+      y: '0vh',
+      width: '1vw',
+      height: '3rem',
+      opacity: 1,
+      rotate: 0,
+    },
+    menu: {
+      x: '0vw',
+      y: '0vh',
+      width: '52vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
@@ -198,10 +376,26 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
   },
   green: {
-    header: {
+    logo: {
       x: '0vw',
-      y: '0vh',
-      width: '100%',
+      y: '-15.8rem',
+      width: '18vw',
+      height: 'fit-content',
+      opacity: 1,
+      rotate: 0,
+    },
+    line: {
+      x: '-9vw',
+      y: '-11.4rem',
+      width: '1vw',
+      height: '35rem',
+      opacity: 1,
+      rotate: 90,
+    },
+    menu: {
+      x: '-28.4vw',
+      y: '-8rem',
+      width: '28.2vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
@@ -240,10 +434,26 @@ const stagePositions: { [key: string]: stagePositions } = {
     },
   },
   pink: {
-    header: {
+    logo: {
       x: '0vw',
       y: '0vh',
-      width: '65%',
+      width: '18vw',
+      height: 'fit-content',
+      opacity: 1,
+      rotate: 0,
+    },
+    line: {
+      x: '0vw',
+      y: '0vh',
+      width: '.1vw',
+      height: '3rem',
+      opacity: 1,
+      rotate: 0,
+    },
+    menu: {
+      x: '0vw',
+      y: '0vh',
+      width: '25vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
@@ -283,157 +493,259 @@ const stagePositions: { [key: string]: stagePositions } = {
   },
 };
 
-interface stageStyles {
-  element: string;
-}
-
-const stageStyles: { [key: string]: stageStyles } = {
-  firstPositions: {
-    element: ' ',
-  },
-  defaultPositions: {
-    element: ' ',
-  },
-  blue: {
-    element: ' ',
-  },
-  yellow: {
-    element: ' ',
-  },
-  green: {
-    element: ' ',
-  },
-  pink: {
-    element: ' ',
-  },
-};
-
-export default function HomePage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [positions, setPositions] = useState<any>(
-    stagePositions['firstPositions']
-  );
-  // TODO - remove no-unused-vars below when use implemented
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars
-  const [styles, setStyles] = useState<any>(stageStyles['firstPositions']);
-
+export default function Home() {
   const [showDefaultMode, setShowDefaultMode] = useState(true);
 
+  const { lastPosition, setLastPosition, homeMode, setHomeMode } =
+    usePosition();
+
+  const dynamicInitials = lastPosition ? lastPosition : initialPositions;
+
+  const [positions, setPositions] = useState<stagePositions>(
+    homeMode == 'goLanding'
+      ? landingPositions
+      : stagePositions['firstPositions']
+  );
+  const [activeShape, setActiveShape] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLastPosition(positions);
+  }, [positions, setLastPosition]);
+
+  useEffect(() => {
+    if (homeMode == 'goLanding') {
+      setHomeMode('goDefault');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleShapeClick = (shape: string) => {
-    if (showDefaultMode) {
+    if (showDefaultMode || homeMode == 'goDefault') {
       setPositions(stagePositions['defaultPositions']);
-      setStyles(stageStyles['defaultPositions']);
       setShowDefaultMode(false);
+      setHomeMode('goLanding');
+      setActiveShape(null);
     } else if (positions === stagePositions[shape]) {
       setPositions(stagePositions['defaultPositions']);
-      setStyles(stageStyles['defaultPositions']);
+      setActiveShape(null);
     } else {
       setPositions(stagePositions[shape]);
-      setStyles(stageStyles[shape]);
+      setActiveShape(shape);
+    }
+  };
+
+  const handleLogoClick = () => {
+    if (homeMode == 'goInitial' || homeMode == 'goLanding') {
+      setPositions(landingPositions);
+      setHomeMode('goDefault');
+      setShowDefaultMode(false);
+      setActiveShape(null);
+    } else if (homeMode == 'goDefault') {
+      setPositions(stagePositions['defaultPositions']);
+      setHomeMode('goLanding');
+      setActiveShape(null);
     }
   };
 
   return (
-    <Layout>
-      {/* <Seo templateTitle='Home' /> */}
-      <Seo />
+    <Layout
+      activeShape={activeShape}
+      positions={positions}
+      initialPositions={dynamicInitials}
+      handleShapeClick={handleShapeClick}
+      handleLogoClick={handleLogoClick}
+      noFooter
+      landingMode={positions == landingPositions}
+    >
+      <Seo templateTitle='Home' />
 
-      <main>
-        <section className='bg-white'>
-          <div className='layout relative flex min-h-screen flex-col items-center justify-center text-center '>
-            {/* Header container */}
+      <AnimatePresence>
+        <main
+          key={activeShape}
+          className=' items-between pointer-events-none  absolute top-0 z-0 flex h-screen w-full flex-col justify-center overflow-hidden'
+        >
+          {/* Project Photo */}
+          {activeShape == 'blue' && (
             <motion.div
-              className=' absolute left-0 top-0 flex items-center justify-start gap-24 p-28 '
+              className='pointer-events-auto absolute z-10 cursor-pointer self-center'
               style={{}}
-              key='header'
-              initial={{ y: '-10vw', width: '65%', height: 'fit-content' }}
-              animate={positions.header}
+              key='blue-project'
+              initial={{
+                x: '4vw',
+                y: '8vh',
+                width: '58vw',
+                height: '58vw',
+                opacity: 0,
+                rotate: -130,
+              }}
+              animate={{
+                x: '14vw',
+                y: '8vh',
+                width: '58vw',
+                height: '58vw',
+                opacity: 1,
+                rotate: -130,
+              }}
+              exit={{
+                x: '24vw',
+                y: '8vh',
+                width: '58vw',
+                height: '58vw',
+                opacity: 0,
+                rotate: -130,
+              }}
               transition={{
                 ease: 'easeInOut',
                 duration: 1.5,
-                // delay: .5,
               }}
             >
-              <Logo className='absolute h-[3vw] w-[18vw]' />
-
-              <hr className={` ml-[28rem] h-[3rem] w-[.2rem] bg-gray-400`} />
-
-              <ul className=' flex h-full w-full items-center justify-between '>
-                <li className=' text-4xl font-thin text-gray-500 '>Projects</li>
-                <li className=' text-4xl font-thin text-gray-500 '>About</li>
-                <li className=' text-4xl font-thin text-gray-500 '>Contact</li>
-              </ul>
+              <Image
+                className='h-full w-full'
+                src='/images/blue-project.png'
+                fill
+                quality={100}
+                style={{ objectFit: 'contain' }}
+                alt=''
+              />
             </motion.div>
+          )}
 
-            {/* Shapes container */}
-            <div className='items-between absolute flex h-screen w-[80vw] flex-col justify-center'>
-              <motion.div
-                className='absolute self-center opacity-0'
-                style={{ filter: 'saturate(1100%) brightness(20%)' }}
-                key='blue'
-                initial={{ x: '28vw' }}
-                animate={positions.blue}
-                transition={{
-                  ease: 'easeInOut',
-                  duration: 1.5,
-                  // delay: .5,
-                }}
-                onClick={() => handleShapeClick('blue')}
-              >
-                <Blue className='h-full w-full' />
-              </motion.div>
+          {activeShape == 'yellow' && (
+            <motion.div
+              className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+              style={{}}
+              key='blue-project'
+              initial={{
+                x: '-33vw',
+                y: '5vh',
+                width: '43vw',
+                height: '43vw',
+                opacity: 0,
+                rotate: -20,
+              }}
+              animate={{
+                x: '-23vw',
+                y: '5vh',
+                width: '43vw',
+                height: '43vw',
+                opacity: 1,
+                rotate: -20,
+              }}
+              exit={{
+                x: '-3vw',
+                y: '5vh',
+                width: '43vw',
+                height: '43vw',
+                opacity: 0,
+                rotate: -20,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <Image
+                className='h-full w-full'
+                src='/images/yellow-project.png'
+                fill
+                quality={100}
+                style={{ objectFit: 'contain' }}
+                alt=''
+              />
+            </motion.div>
+          )}
 
-              <motion.div
-                className='absolute self-center opacity-0'
-                style={{ filter: 'saturate(1100%) brightness(20%)' }}
-                key='yellow'
-                initial={{ x: '8vw' }}
-                animate={positions.yellow}
-                transition={{
-                  ease: 'easeInOut',
-                  duration: 1.5,
-                  // delay: .5,
-                }}
-                onClick={() => handleShapeClick('yellow')}
-              >
-                <Yellow className='h-full w-full' />
-              </motion.div>
+          {activeShape == 'green' && (
+            <motion.div
+              className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+              style={{}}
+              key='blue-project'
+              initial={{
+                x: '5vw',
+                y: '3vh',
+                width: '51vw',
+                height: '51vw',
+                opacity: 0,
+                rotate: 55,
+              }}
+              animate={{
+                x: '15vw',
+                y: '3vh',
+                width: '51vw',
+                height: '51vw',
+                opacity: 1,
+                rotate: 55,
+              }}
+              exit={{
+                x: '25vw',
+                y: '3vh',
+                width: '51vw',
+                height: '51vw',
+                opacity: 0,
+                rotate: 55,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <Image
+                className='h-full w-full'
+                src='/images/green-project.png'
+                fill
+                quality={100}
+                style={{ objectFit: 'contain' }}
+                alt=''
+              />
+            </motion.div>
+          )}
 
-              <motion.div
-                className='absolute self-center opacity-0'
-                style={{ filter: 'saturate(1100%) brightness(20%)' }}
-                key='green'
-                initial={{ x: '-8vw' }}
-                animate={positions.green}
-                transition={{
-                  ease: 'easeInOut',
-                  duration: 1.5,
-                  // delay: .5,
-                }}
-                onClick={() => handleShapeClick('green')}
-              >
-                <Green className='h-full w-full' />
-              </motion.div>
-
-              <motion.div
-                className='absolute self-center opacity-0'
-                style={{ filter: 'saturate(1100%) brightness(20%)' }}
-                key='pink'
-                initial={{ x: '-28vw' }}
-                animate={positions.pink}
-                transition={{
-                  ease: 'easeInOut',
-                  duration: 1.5,
-                  // delay: .5,
-                }}
-                onClick={() => handleShapeClick('pink')}
-              >
-                <Pink className='h-full w-full' />
-              </motion.div>
-            </div>
-          </div>
-        </section>
-      </main>
+          {activeShape == 'pink' && (
+            <motion.div
+              className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+              style={{}}
+              key='blue-project'
+              initial={{
+                x: '0vw',
+                y: '-2vh',
+                width: '59vw',
+                height: '59vw',
+                opacity: 0,
+                rotate: -70,
+              }}
+              animate={{
+                x: '10vw',
+                y: '-2vh',
+                width: '59vw',
+                height: '59vw',
+                opacity: 1,
+                rotate: -70,
+              }}
+              exit={{
+                x: '20vw',
+                y: '-2vh',
+                width: '59vw',
+                height: '59vw',
+                opacity: 0,
+                rotate: -70,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <Image
+                className='h-full w-full'
+                src='/images/pink-project-.png'
+                fill
+                quality={100}
+                style={{ objectFit: 'contain' }}
+                alt=''
+              />
+            </motion.div>
+          )}
+        </main>
+      </AnimatePresence>
     </Layout>
   );
 }

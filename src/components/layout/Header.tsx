@@ -1,31 +1,148 @@
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
-import UnstyledLink from '@/components/links/UnstyledLink';
+import Logo from '~/svg/logo.svg';
 
-const links = [
-  { href: '/', label: 'Route 1' },
-  { href: '/', label: 'Route 2' },
-];
+interface Position {
+  x: string;
+  y: string;
+  width: string;
+  height: string;
+  rotate: number;
+  opacity: number;
+}
+interface stagePositions {
+  logo: Position;
+  line: Position;
+  menu: Position;
+  blue: Position;
+  yellow: Position;
+  green: Position;
+  pink: Position;
+}
+interface shapeProps {
+  positions: stagePositions;
+  initialPositions: stagePositions;
+  brightHeader?: boolean;
+  landingMode?: boolean;
+  handleLogoClick: () => void;
+}
 
-export default function Header() {
+export default function Header({
+  positions,
+  initialPositions,
+  brightHeader,
+  landingMode,
+  handleLogoClick,
+}: shapeProps) {
+  const router = useRouter();
+  const currentPage = router.pathname;
+
   return (
-    <header className='sticky top-0 z-50 bg-white'>
-      <div className='layout flex h-14 items-center justify-between'>
-        <UnstyledLink href='/' className='font-bold hover:text-gray-600'>
-          Home
-        </UnstyledLink>
-        <nav>
-          <ul className='flex items-center justify-between space-x-4'>
-            {links.map(({ href, label }) => (
-              <li key={`${href}${label}`}>
-                <UnstyledLink href={href} className='hover:text-gray-600'>
-                  {label}
-                </UnstyledLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+    <header className='pointer-events-none absolute left-0 top-0 flex h-fit w-full items-center justify-start gap-24 p-28'>
+      <motion.div
+        className='pointer-events-auto absolute'
+        style={{}}
+        key='logo'
+        initial={initialPositions.logo}
+        animate={positions.logo}
+        transition={{
+          ease: 'easeInOut',
+          duration: 1.5,
+          // delay: .5,
+        }}
+        onClick={handleLogoClick}
+      >
+        <Logo
+          className={`h-full w-full cursor-pointer
+                      ${brightHeader ? 'bright-logo' : ''}`}
+        />
+      </motion.div>
+
+      <motion.div
+        className=' pointer-events-auto flex items-center justify-center '
+        style={{}}
+        key='line'
+        initial={{ ...initialPositions.line, marginLeft: '28rem' }}
+        animate={{
+          ...positions.line,
+          marginLeft: landingMode ? '0rem' : '28rem',
+        }}
+        transition={{
+          ease: 'easeInOut',
+          duration: 1.5,
+          // delay: .5,
+        }}
+      >
+        <div
+          className={` h-full w-[1px] ${
+            brightHeader ? 'bg-white' : 'bg-gray-400'
+          } `}
+        />
+      </motion.div>
+
+      <motion.ul
+        className={` pointer-events-auto flex h-full w-full items-center justify-between text-4xl font-thin
+                    ${brightHeader ? 'text-white' : 'text-customGray'}`}
+        style={{}}
+        key='menu'
+        initial={initialPositions.menu}
+        animate={positions.menu}
+        transition={{
+          ease: 'easeInOut',
+          duration: 1.5,
+          // delay: .5,
+        }}
+      >
+        <motion.li
+          key='projects'
+          initial=''
+          animate={
+            currentPage == '/projects'
+              ? { fontWeight: 600 }
+              : { fontWeight: 150 }
+          }
+          transition={{
+            ease: 'easeOut',
+            duration: 0.5,
+            delay: 0.6,
+          }}
+        >
+          <Link href='/projects'>Projects</Link>
+        </motion.li>
+        <motion.li
+          key='about'
+          initial=''
+          animate={
+            currentPage == '/about' ? { fontWeight: 600 } : { fontWeight: 150 }
+          }
+          transition={{
+            ease: 'easeOut',
+            duration: 0.5,
+            delay: 0.6,
+          }}
+        >
+          <Link href='/about'>About</Link>
+        </motion.li>
+        <motion.li
+          key='contact'
+          initial=''
+          animate={
+            currentPage == '/contact'
+              ? { fontWeight: 600 }
+              : { fontWeight: 150 }
+          }
+          transition={{
+            ease: 'easeOut',
+            duration: 0.5,
+            delay: 0.6,
+          }}
+        >
+          <Link href='/contact'>Contact</Link>
+        </motion.li>
+      </motion.ul>
     </header>
   );
 }
