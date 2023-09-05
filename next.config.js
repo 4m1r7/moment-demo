@@ -8,7 +8,7 @@ const nextConfig = {
   swcMinify: true,
 
   images: {
-    domains: ['localhost'],
+    domains: ['moment-studio.ir'],
   },
 
   // SVGR

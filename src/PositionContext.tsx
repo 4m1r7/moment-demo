@@ -41,10 +41,7 @@ export const usePosition = () => {
 interface PositionProviderProps {
   children: ReactNode;
 }
-
-export const PositionProvider: React.FC<PositionProviderProps> = ({
-  children,
-}) => {
+export function PositionProvider({ children }: PositionProviderProps) {
   const [lastPosition, setLastPosition] = useState<stagePositions | null>(null);
   const [homeMode, setHomeMode] = useState<string>('goInitial'); // can be 'goInitial', 'goDefault', 'goLanding'
 
@@ -55,4 +52,4 @@ export const PositionProvider: React.FC<PositionProviderProps> = ({
       {children}
     </PositionContext.Provider>
   );
-};
+}

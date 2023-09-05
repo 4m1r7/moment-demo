@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:10003/graphql',
+  uri: 'http://moment-studio.ir/graphql',
   cache: new InMemoryCache(),
 });
 
