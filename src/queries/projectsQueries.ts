@@ -14,7 +14,7 @@ export const GET_PAGE_DATA = gql`
 
 export const GET_ROUTES = gql`
   query ProjectRoutes {
-    projects {
+    projects(first: 100) {
       edges {
         node {
           slug
@@ -26,7 +26,7 @@ export const GET_ROUTES = gql`
 
 export const GET_PROJECTS = gql`
   query AllProjects {
-    projects {
+    projects(first: 100) {
       edges {
         node {
           id
