@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -42,8 +43,7 @@ export default function Shapes({
     <div className=' items-between pointer-events-none  absolute top-0 z-0 flex h-screen w-full flex-col justify-center overflow-hidden'>
       {/* Shape Elements */}
       <motion.div
-        className='pointer-events-auto absolute z-30 cursor-pointer self-center'
-        style={{ filter: 'saturate(1100%) brightness(20%)' }}
+        className='pointer-events-auto absolute z-30 cursor-pointer self-center mix-blend-multiply'
         key='blue'
         initial={initialPositions.blue}
         animate={positions.blue}
@@ -58,8 +58,7 @@ export default function Shapes({
       </motion.div>
 
       <motion.div
-        className='pointer-events-auto absolute z-30 cursor-pointer self-center opacity-0'
-        style={{ filter: 'saturate(1100%) brightness(20%)' }}
+        className='pointer-events-auto absolute z-30 cursor-pointer self-center opacity-0 mix-blend-multiply'
         key='yellow'
         initial={initialPositions.yellow}
         animate={positions.yellow}
@@ -74,8 +73,7 @@ export default function Shapes({
       </motion.div>
 
       <motion.div
-        className='pointer-events-auto absolute z-30 cursor-pointer self-center opacity-0'
-        style={{ filter: 'saturate(1100%) brightness(20%)' }}
+        className='pointer-events-auto absolute z-30 cursor-pointer self-center opacity-0 mix-blend-multiply'
         key='green'
         initial={initialPositions.green}
         animate={positions.green}
@@ -90,8 +88,7 @@ export default function Shapes({
       </motion.div>
 
       <motion.div
-        className='pointer-events-auto absolute z-30 cursor-pointer self-center opacity-0'
-        style={{ filter: 'saturate(1100%) brightness(20%)' }}
+        className='pointer-events-auto absolute z-30 cursor-pointer self-center opacity-0 mix-blend-multiply'
         key='pink'
         initial={initialPositions.pink}
         animate={positions.pink}
@@ -105,7 +102,191 @@ export default function Shapes({
         <Pink className='h-full w-full' />
       </motion.div>
 
-      {/* Shape Info Elements */}
+      {/* Image Elements */}
+      <AnimatePresence>
+        {/* Project Photo */}
+        {activeShape == 'blue' && (
+          <motion.div
+            className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+            style={{}}
+            key='blue-project'
+            initial={{
+              x: '4vw',
+              y: '8vh',
+              width: '58vw',
+              height: '58vw',
+              opacity: 0,
+              rotate: -130,
+            }}
+            animate={{
+              x: '14vw',
+              y: '8vh',
+              width: '58vw',
+              height: '58vw',
+              opacity: 1,
+              rotate: -130,
+            }}
+            exit={{
+              x: '24vw',
+              y: '8vh',
+              width: '58vw',
+              height: '58vw',
+              opacity: 0,
+              rotate: -130,
+            }}
+            transition={{
+              ease: 'easeInOut',
+              duration: 1.5,
+            }}
+          >
+            <Image
+              className='h-full w-full'
+              src='/images/blue-project.png'
+              fill
+              quality={100}
+              style={{ objectFit: 'contain' }}
+              alt=''
+            />
+          </motion.div>
+        )}
+
+        {activeShape == 'yellow' && (
+          <motion.div
+            className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+            style={{}}
+            key='yellow-project'
+            initial={{
+              x: '-33vw',
+              y: '5vh',
+              width: '43vw',
+              height: '43vw',
+              opacity: 0,
+              rotate: -20,
+            }}
+            animate={{
+              x: '-23vw',
+              y: '5vh',
+              width: '43vw',
+              height: '43vw',
+              opacity: 1,
+              rotate: -20,
+            }}
+            exit={{
+              x: '-3vw',
+              y: '5vh',
+              width: '43vw',
+              height: '43vw',
+              opacity: 0,
+              rotate: -20,
+            }}
+            transition={{
+              ease: 'easeInOut',
+              duration: 1.5,
+            }}
+          >
+            <Image
+              className='h-full w-full'
+              src='/images/yellow-project.png'
+              fill
+              quality={100}
+              style={{ objectFit: 'contain' }}
+              alt=''
+            />
+          </motion.div>
+        )}
+
+        {activeShape == 'green' && (
+          <motion.div
+            className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+            style={{}}
+            key='green-project'
+            initial={{
+              x: '5vw',
+              y: '3vh',
+              width: '51vw',
+              height: '51vw',
+              opacity: 0,
+              rotate: 55,
+            }}
+            animate={{
+              x: '15vw',
+              y: '3vh',
+              width: '51vw',
+              height: '51vw',
+              opacity: 1,
+              rotate: 55,
+            }}
+            exit={{
+              x: '25vw',
+              y: '3vh',
+              width: '51vw',
+              height: '51vw',
+              opacity: 0,
+              rotate: 55,
+            }}
+            transition={{
+              ease: 'easeInOut',
+              duration: 1.5,
+            }}
+          >
+            <Image
+              className='h-full w-full'
+              src='/images/green-project.png'
+              fill
+              quality={100}
+              style={{ objectFit: 'contain' }}
+              alt=''
+            />
+          </motion.div>
+        )}
+
+        {activeShape == 'pink' && (
+          <motion.div
+            className='pointer-events-auto absolute z-10 cursor-pointer self-center'
+            style={{}}
+            key='pink-project'
+            initial={{
+              x: '0vw',
+              y: '-2vh',
+              width: '59vw',
+              height: '59vw',
+              opacity: 0,
+              rotate: -70,
+            }}
+            animate={{
+              x: '10vw',
+              y: '-2vh',
+              width: '59vw',
+              height: '59vw',
+              opacity: 1,
+              rotate: -70,
+            }}
+            exit={{
+              x: '20vw',
+              y: '-2vh',
+              width: '59vw',
+              height: '59vw',
+              opacity: 0,
+              rotate: -70,
+            }}
+            transition={{
+              ease: 'easeInOut',
+              duration: 1.5,
+            }}
+          >
+            <Image
+              className='h-full w-full'
+              src='/images/pink-project-.png'
+              fill
+              quality={100}
+              style={{ objectFit: 'contain' }}
+              alt=''
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Info Elements */}
       <AnimatePresence>
         {activeShape == 'blue' && (
           <motion.div

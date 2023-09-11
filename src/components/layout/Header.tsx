@@ -44,7 +44,6 @@ export default function Header({
     <header className='pointer-events-none absolute left-0 top-0 flex h-fit w-full items-center justify-start gap-24 p-28'>
       <motion.div
         className='pointer-events-auto absolute'
-        style={{}}
         key='logo'
         initial={initialPositions.logo}
         animate={positions.logo}
@@ -56,14 +55,13 @@ export default function Header({
         onClick={handleLogoClick}
       >
         <Logo
-          className={`h-full w-full cursor-pointer
+          className={` h-full w-full cursor-pointer
                       ${brightHeader ? 'bright-logo' : ''}`}
         />
       </motion.div>
 
       <motion.div
         className=' pointer-events-auto flex items-center justify-center '
-        style={{}}
         key='line'
         initial={{ ...initialPositions.line, marginLeft: '28rem' }}
         animate={{
@@ -86,7 +84,6 @@ export default function Header({
       <motion.ul
         className={` pointer-events-auto flex h-full w-full items-center justify-between text-4xl font-thin
                     ${brightHeader ? 'text-white' : 'text-customGray'}`}
-        style={{}}
         key='menu'
         initial={initialPositions.menu}
         animate={positions.menu}
