@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -7,6 +8,8 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
 import { usePosition } from '@/PositionContext';
+
+import Arrow from '~/svg/chevron.svg';
 
 interface Position {
   x: string;
@@ -31,7 +34,7 @@ const initialPositions: stagePositions = {
     x: '0vw',
     y: '-15vh',
     width: '18vw',
-    height: 'fit-content',
+    height: '15rem',
     opacity: 0,
     rotate: 0,
   },
@@ -89,7 +92,7 @@ const landingPositions: stagePositions = {
     x: '3vw',
     y: '-58vh',
     width: '83vw',
-    height: '',
+    height: '40rem',
     opacity: 0.5,
     rotate: 0,
   },
@@ -114,7 +117,7 @@ const landingPositions: stagePositions = {
     y: '10vh',
     width: '23vw',
     height: '23vw',
-    opacity: 0.4,
+    opacity: 1,
     rotate: 65,
   },
   yellow: {
@@ -122,7 +125,7 @@ const landingPositions: stagePositions = {
     y: '12vh',
     width: '15vw',
     height: '15vw',
-    opacity: 0.4,
+    opacity: 1,
     rotate: -35,
   },
   green: {
@@ -130,7 +133,7 @@ const landingPositions: stagePositions = {
     y: '-6vh',
     width: '35vw',
     height: '35vw',
-    opacity: 0.4,
+    opacity: 1,
     rotate: 145,
   },
   pink: {
@@ -138,7 +141,7 @@ const landingPositions: stagePositions = {
     y: '16vh',
     width: '33vw',
     height: '33vw',
-    opacity: 0.4,
+    opacity: 1,
     rotate: -75,
   },
 };
@@ -148,7 +151,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       x: '0vw',
       y: '0vh',
       width: '18vw',
-      height: 'fit-content',
+      height: '',
       opacity: 1,
       rotate: 0,
     },
@@ -173,7 +176,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '2vh',
       width: '17vw',
       height: '17vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 0,
     },
     yellow: {
@@ -181,7 +184,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-6vh',
       width: '12.5vw',
       height: '12.5vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 0,
     },
     green: {
@@ -189,7 +192,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '6vh',
       width: '14vw',
       height: '14vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 0,
     },
     pink: {
@@ -197,7 +200,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-7vh',
       width: '14vw',
       height: '14vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 0,
     },
   },
@@ -206,7 +209,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       x: '0vw',
       y: '0vh',
       width: '18vw',
-      height: 'fit-content',
+      height: '20rem',
       opacity: 1,
       rotate: 0,
     },
@@ -231,7 +234,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-11vh',
       width: '24vw',
       height: '24vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 6,
     },
     yellow: {
@@ -239,7 +242,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '14vh',
       width: '19vw',
       height: '19vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -40,
     },
     green: {
@@ -247,7 +250,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '23vh',
       width: '18vw',
       height: '18vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 160,
     },
     pink: {
@@ -255,7 +258,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-14vh',
       width: '22vw',
       height: '22vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -18,
     },
   },
@@ -264,7 +267,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       x: '0vw',
       y: '55vh',
       width: '18vw',
-      height: 'fit-content',
+      height: '15rem',
       opacity: 1,
       rotate: 0,
     },
@@ -289,7 +292,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '8vh',
       width: '58vw',
       height: '58vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -130,
     },
     yellow: {
@@ -297,7 +300,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-30vh',
       width: '12.5vw',
       height: '12.5vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 0,
     },
     green: {
@@ -305,7 +308,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-23vh',
       width: '23vw',
       height: '23vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 0,
     },
     pink: {
@@ -313,7 +316,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-3vh',
       width: '30.5vw',
       height: '30.5vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -75,
     },
   },
@@ -322,7 +325,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       x: '0vw',
       y: '0vh',
       width: '18vw',
-      height: 'fit-content',
+      height: '',
       opacity: 1,
       rotate: 0,
     },
@@ -347,7 +350,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-25vh',
       width: '12vw',
       height: '12vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 150,
     },
     yellow: {
@@ -355,7 +358,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '5vh',
       width: '43vw',
       height: '43vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -20,
     },
     green: {
@@ -363,7 +366,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-9vh',
       width: '18vw',
       height: '18vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 180,
     },
     pink: {
@@ -371,7 +374,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-20vh',
       width: '21vw',
       height: '21vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -60,
     },
   },
@@ -380,7 +383,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       x: '0vw',
       y: '-15.8rem',
       width: '18vw',
-      height: 'fit-content',
+      height: '',
       opacity: 1,
       rotate: 0,
     },
@@ -405,7 +408,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-20vh',
       width: '12vw',
       height: '12vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 185,
     },
     yellow: {
@@ -413,7 +416,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '26vh',
       width: '13vw',
       height: '13vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -10,
     },
     green: {
@@ -421,7 +424,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '3vh',
       width: '51vw',
       height: '51vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 55,
     },
     pink: {
@@ -429,7 +432,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '8vh',
       width: '21vw',
       height: '21vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -20,
     },
   },
@@ -438,7 +441,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       x: '0vw',
       y: '0vh',
       width: '18vw',
-      height: 'fit-content',
+      height: '',
       opacity: 1,
       rotate: 0,
     },
@@ -463,7 +466,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '16vh',
       width: '15vw',
       height: '15vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 45,
     },
     yellow: {
@@ -471,7 +474,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-20vh',
       width: '11.5vw',
       height: '11.5vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 30,
     },
     green: {
@@ -479,7 +482,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '27vh',
       width: '12vw',
       height: '12vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: 160,
     },
     pink: {
@@ -487,7 +490,7 @@ const stagePositions: { [key: string]: stagePositions } = {
       y: '-2vh',
       width: '59vw',
       height: '59vw',
-      opacity: 0.4,
+      opacity: 1,
       rotate: -70,
     },
   },
@@ -559,11 +562,12 @@ export default function Home() {
     >
       <Seo templateTitle='Home' />
 
-      <AnimatePresence>
-        <main
-          key={activeShape}
-          className=' items-between pointer-events-none  absolute top-0 z-0 flex h-screen w-full flex-col justify-center overflow-hidden'
-        >
+      <main
+        key={activeShape}
+        className=' items-between pointer-events-none  absolute top-0 z-0 flex h-screen w-full flex-col justify-center overflow-hidden'
+      >
+        {/* Image Elements */}
+        <AnimatePresence>
           {/* Project Photo */}
           {activeShape == 'blue' && (
             <motion.div
@@ -614,7 +618,7 @@ export default function Home() {
             <motion.div
               className='pointer-events-auto absolute z-10 cursor-pointer self-center'
               style={{}}
-              key='blue-project'
+              key='yellow-project'
               initial={{
                 x: '-33vw',
                 y: '5vh',
@@ -659,7 +663,7 @@ export default function Home() {
             <motion.div
               className='pointer-events-auto absolute z-10 cursor-pointer self-center'
               style={{}}
-              key='blue-project'
+              key='green-project'
               initial={{
                 x: '5vw',
                 y: '3vh',
@@ -704,7 +708,7 @@ export default function Home() {
             <motion.div
               className='pointer-events-auto absolute z-10 cursor-pointer self-center'
               style={{}}
-              key='blue-project'
+              key='pink-project'
               initial={{
                 x: '0vw',
                 y: '-2vh',
@@ -744,8 +748,209 @@ export default function Home() {
               />
             </motion.div>
           )}
-        </main>
-      </AnimatePresence>
+        </AnimatePresence>
+
+        {/* Info Elements */}
+        <AnimatePresence>
+          {activeShape == 'blue' && (
+            <motion.div
+              className=' project-card pointer-events-auto absolute z-40 flex cursor-pointer flex-col justify-between self-center'
+              style={{}}
+              key='blue-info'
+              initial={{
+                x: '47vw',
+                y: '-23vh',
+                width: '16vw',
+                height: '30vh',
+                opacity: 0,
+              }}
+              animate={{
+                x: '37vw',
+                y: '-23vh',
+                width: '16vw',
+                height: '30vh',
+                opacity: 1,
+              }}
+              exit={{
+                x: '27vw',
+                y: '-23vh',
+                width: '16vw',
+                height: '30vh',
+                opacity: 0,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <h2 className=' text-customGray text-right text-4xl leading-relaxed tracking-[1rem] '>
+                Barcelona Villa
+              </h2>
+              <p className=' text-customGray text-right text-4xl font-thin leading-relaxed tracking-[1rem] '>
+                / 2024
+              </p>
+              <Link
+                href='/projects/barcelona-villa'
+                className='border-customGray flex w-full items-center justify-evenly rounded-full border-[.9px] bg-white px-2 py-5 '
+              >
+                <p className=' text-customGray pb-1 text-center text-2xl font-semibold tracking-wide '>
+                  View Project
+                </p>
+                <Arrow className='h-6 w-12' />
+              </Link>
+            </motion.div>
+          )}
+
+          {activeShape == 'yellow' && (
+            <motion.div
+              className=' project-card pointer-events-auto absolute z-40 flex cursor-pointer items-end justify-between self-center'
+              style={{}}
+              key='yellow-info'
+              initial={{
+                x: '36vw',
+                y: '25vh',
+                width: '35vw',
+                height: '18vh',
+                opacity: 0,
+              }}
+              animate={{
+                x: '26vw',
+                y: '25vh',
+                width: '35vw',
+                height: '18vh',
+                opacity: 1,
+              }}
+              exit={{
+                x: '16vw',
+                y: '25vh',
+                width: '35vw',
+                height: '18vh',
+                opacity: 0,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <Link
+                href='/projects/tehran-mall'
+                className='border-customGray flex h-fit w-1/2 items-center justify-evenly rounded-full border-[.9px] bg-white px-2 py-5 '
+              >
+                <p className=' text-customGray pb-1 text-center text-2xl font-semibold tracking-wide '>
+                  View Project
+                </p>
+                <Arrow className='h-6 w-12' />
+              </Link>
+              <div className='flex w-1/2 flex-col gap-10'>
+                <h2 className=' text-customGray text-right text-4xl leading-relaxed tracking-[1rem] '>
+                  Tehran Mall
+                </h2>
+                <p className=' text-customGray text-right text-4xl font-thin leading-relaxed tracking-[1rem] '>
+                  / 2026
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {activeShape == 'green' && (
+            <motion.div
+              className=' project-card pointer-events-auto absolute z-40 flex cursor-pointer flex-col justify-between self-center'
+              style={{}}
+              key='green-info'
+              initial={{
+                x: '-26vw',
+                y: '15vh',
+                width: '16vw',
+                height: '30vh',
+                opacity: 0,
+              }}
+              animate={{
+                x: '-36vw',
+                y: '15vh',
+                width: '16vw',
+                height: '30vh',
+                opacity: 1,
+              }}
+              exit={{
+                x: '-46vw',
+                y: '15vh',
+                width: '16vw',
+                height: '30vh',
+                opacity: 0,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <h2 className=' text-customGray text-left text-4xl leading-relaxed tracking-[1rem] '>
+                The Montana
+              </h2>
+              <p className=' text-customGray text-left text-4xl font-thin leading-relaxed tracking-[1rem] '>
+                / 2017
+              </p>
+              <Link
+                href='/projects/the-montana'
+                className='border-customGray flex w-full items-center justify-evenly rounded-full border-[.9px] bg-white px-2 py-5 '
+              >
+                <p className=' text-customGray pb-1 text-center text-2xl font-semibold tracking-wide '>
+                  View Project
+                </p>
+                <Arrow className='h-6 w-12' />
+              </Link>
+            </motion.div>
+          )}
+
+          {activeShape == 'pink' && (
+            <motion.div
+              className=' project-card pointer-events-auto absolute z-40 flex cursor-pointer flex-col justify-between self-center'
+              style={{}}
+              key='pink-info'
+              initial={{
+                x: '-26vw',
+                y: '18vh',
+                width: '20vw',
+                height: '36vh',
+                opacity: 0,
+              }}
+              animate={{
+                x: '-36vw',
+                y: '18vh',
+                width: '20vw',
+                height: '36vh',
+                opacity: 1,
+              }}
+              exit={{
+                x: '-46vw',
+                y: '18vh',
+                width: '20vw',
+                height: '36vh',
+                opacity: 0,
+              }}
+              transition={{
+                ease: 'easeInOut',
+                duration: 1.5,
+              }}
+            >
+              <h2 className=' text-customGray text-left text-4xl leading-relaxed tracking-[1rem] '>
+                Tabriz Trade Center
+              </h2>
+              <p className=' text-customGray text-left text-4xl font-thin leading-relaxed tracking-[1rem] '>
+                / 2019
+              </p>
+              <Link
+                href='/projects/tabriz-trade-center'
+                className='border-customGray mt-16 flex w-full items-center justify-evenly rounded-full border-[.9px] bg-white px-2 py-5 '
+              >
+                <p className=' text-customGray pb-1 text-center text-2xl font-semibold tracking-wide '>
+                  View Project
+                </p>
+                <Arrow className='h-6 w-12' />
+              </Link>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
     </Layout>
   );
 }
