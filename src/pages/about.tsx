@@ -481,7 +481,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
             exit='exit'
           >
             {/* Team Photo */}
-            <div className='relative h-[55vh] w-full overflow-hidden rounded-full bg-stone-200'>
+            <div className='relative h-[25vh] w-full overflow-hidden rounded-full bg-stone-200 md:h-[55vh]'>
               {aboutData.pageBy.featuredImage.node.mediaItemUrl && (
                 <Image
                   src={aboutData.pageBy.featuredImage.node.mediaItemUrl}
@@ -496,16 +496,16 @@ export default function About({ aboutData, membersData }: AboutProps) {
 
             {/* About Paragraph */}
             <div
-              className=' cms-content text-customGray mb-20 w-full px-[15%] text-left'
+              className='cms-content text-customGray mb-20 mt-14 w-full px-[5%] text-left md:px-[15%]'
               dangerouslySetInnerHTML={{ __html: aboutData.pageBy.content }}
             />
 
             {/* Current Members */}
-            <h2 className='text-customGray w-full text-6xl'>
+            <h2 className='text-customGray mb-28 w-full text-8xl md:text-6xl'>
               Current Members of Moment
             </h2>
 
-            <div className='grid w-full grid-cols-4 gap-28 px-16'>
+            <div className='grid w-full grid-cols-2 gap-28 px-16 md:grid-cols-4'>
               {membersData.members.edges
                 .filter((member: MemberNode) => {
                   return !member.node.memberFields.exMember;
@@ -516,7 +516,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
                     key={member.node.id}
                     className='text-customGray relative flex flex-col items-center justify-start text-center'
                   >
-                    <div className='relative mb-9 aspect-square w-full overflow-hidden rounded-full bg-stone-200'>
+                    <div className='relative mb-16 aspect-square w-full overflow-hidden rounded-full bg-stone-200 md:mb-9'>
                       {member.node.featuredImage.node.sourceUrl && (
                         <Image
                           src={member.node.featuredImage.node.sourceUrl}
@@ -528,9 +528,11 @@ export default function About({ aboutData, membersData }: AboutProps) {
                       )}
                     </div>
 
-                    <h3 className='mb-1'>{member.node.title}</h3>
+                    <h3 className='mb-6 text-7xl md:mb-1 md:text-2xl'>
+                      {member.node.title}
+                    </h3>
 
-                    <p className=' text-2xl font-extralight'>
+                    <p className='text-7xl font-extralight md:text-2xl'>
                       {member.node.memberFields.position}
                     </p>
                   </div>
@@ -540,30 +542,33 @@ export default function About({ aboutData, membersData }: AboutProps) {
             {/* Previous Members (conditionally rendered if there are any previous members) */}
             {prevMembers.length > 0 && (
               <div className='mt-8 flex w-full flex-col gap-28'>
-                <h2 className='text-customGray w-full text-6xl'>
+                <h2 className='text-customGray mb-28 w-full text-8xl md:text-6xl'>
                   Previous Members of Moment
                 </h2>
 
-                <div className='grid w-full grid-cols-4 gap-28 px-16'>
+                <div className='grid w-full grid-cols-2 gap-28 px-16 md:grid-cols-4'>
                   {prevMembers.reverse().map((member: MemberNode) => (
                     <div
                       key={member.node.id}
                       className='text-customGray relative flex flex-col items-center justify-start text-center'
                     >
-                      <div className='relative mb-9 aspect-square w-full overflow-hidden rounded-full'>
-                        <Image
-                          src={member.node.featuredImage.node.sourceUrl}
-                          fill
-                          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
-                          alt='Moment Team'
-                          style={{
-                            objectFit: 'cover',
-                            objectPosition: '50% 40%',
-                          }}
-                        />
+                      <div className='relative mb-16 aspect-square w-full overflow-hidden rounded-full bg-stone-200 md:mb-9'>
+                        {member.node.featuredImage.node.sourceUrl && (
+                          <Image
+                            src={member.node.featuredImage.node.sourceUrl}
+                            fill
+                            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                            alt='Moment Team'
+                            style={{ objectFit: 'cover' }}
+                          />
+                        )}
                       </div>
-                      <h3 className='mb-1'>{member.node.title}</h3>
-                      <p className=' text-2xl font-extralight'>
+
+                      <h3 className='mb-6 text-7xl md:mb-1 md:text-2xl'>
+                        {member.node.title}
+                      </h3>
+
+                      <p className='text-7xl font-extralight md:text-2xl'>
                         {member.node.memberFields.position}
                       </p>
                     </div>

@@ -463,7 +463,7 @@ export default function Contact() {
     stagePositions['firstPositions']
   );
 
-  const [result, setResult] = useState('');
+  const [result, setResult] = useState<string | null>(null);
 
   useEffect(() => {
     setLastPosition(positions);
@@ -491,11 +491,10 @@ export default function Contact() {
     }).then((res) => res.json());
 
     if (res.success) {
-      // console.log("Success", res);
-      setResult(res.message);
+      // setResult(res.message);
+      setResult('Thank you for contacting<br/>Moment Studio');
     } else {
-      // console.log("Error", res);
-      setResult(res.message);
+      setResult(`<p>Failed to Submit!<br>${res.message}</p>`);
     }
   };
 
@@ -522,16 +521,13 @@ export default function Contact() {
             {/* Contact Form */}
             <form
               onSubmit={handleSubmit}
-              className='flex w-full justify-between gap-48 text-left'
+              className='relative flex w-full flex-col justify-between gap-48 text-left md:flex-row'
             >
-              <div className='flex w-1/3 flex-col gap-12'>
-                {/* TODO create proper submit results window */}
-                <p>{result}</p>
-
+              <div className='flex w-full flex-col gap-12 md:w-1/3'>
                 <div className='flex w-full flex-col'>
                   <label
                     htmlFor='name'
-                    className='text-customGray w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
+                    className='text-customGray w-fit border-b border-neutral-400 pb-5 text-8xl font-semibold md:text-4xl'
                   >
                     Name
                   </label>
@@ -539,14 +535,14 @@ export default function Contact() {
                     id='name'
                     name='name'
                     type='text'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
+                    className='customGray h-80 border-0 border-b border-neutral-500 text-8xl focus:border-neutral-500 focus:ring-0 md:h-36 md:text-3xl'
                   />
                 </div>
 
                 <div className='flex w-full flex-col'>
                   <label
                     htmlFor='email'
-                    className='text-customGray  w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
+                    className='text-customGray  w-fit border-b border-neutral-400 pb-5 text-8xl font-semibold md:text-4xl'
                   >
                     Email
                   </label>
@@ -554,14 +550,14 @@ export default function Contact() {
                     id='email'
                     name='email'
                     type='email'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
+                    className='customGray h-80 border-0 border-b border-neutral-500 text-8xl focus:border-neutral-500 focus:ring-0 md:h-36 md:text-3xl'
                   />
                 </div>
 
                 <div className='flex w-full flex-col'>
                   <label
                     htmlFor='location'
-                    className='text-customGray  w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
+                    className='text-customGray  w-fit border-b border-neutral-400 pb-5 text-8xl font-semibold md:text-4xl'
                   >
                     Location
                   </label>
@@ -569,34 +565,42 @@ export default function Contact() {
                     id='location'
                     name='location'
                     type='text'
-                    className='customGray h-36 border-0 border-b border-neutral-500 text-3xl focus:border-neutral-500 focus:ring-0'
+                    className='customGray h-80 border-0 border-b border-neutral-500 text-8xl focus:border-neutral-500 focus:ring-0 md:h-36 md:text-3xl'
                   />
                 </div>
               </div>
 
-              <div className='flex w-2/3 flex-col'>
+              <div className='flex w-full flex-col md:w-2/3'>
                 <div className='flex w-full flex-grow flex-col'>
                   <label
                     htmlFor='message'
-                    className='text-customGray h-fit w-fit border-b border-neutral-400 pb-5 text-4xl font-semibold'
+                    className='text-customGray h-fit w-fit border-b border-neutral-400 pb-5 text-8xl font-semibold md:text-4xl'
                   >
                     Your Message
                   </label>
                   <textarea
                     id='message'
                     name='message'
-                    className='customGray flex-grow border-0 border-b border-neutral-500 py-8 text-3xl focus:border-neutral-500 focus:ring-0'
+                    className='customGray h-[40rem] border-0 border-b border-neutral-500 py-8 text-8xl focus:border-neutral-500 focus:ring-0 md:h-auto md:flex-grow md:text-3xl'
                     required
                   ></textarea>
                 </div>
 
                 <button
                   type='submit'
-                  className='mt-36 h-24 rounded-full bg-gradient-to-r from-blue-400 to-pink-300 text-4xl font-bold text-white'
+                  className='mt-36 h-64 rounded-full bg-gradient-to-r from-blue-400 to-pink-300 text-8xl font-bold text-white md:h-24 md:text-4xl'
                 >
                   Send
                 </button>
               </div>
+              {/* TODO create proper submit results window */}
+              {result && (
+                <div className='absolute left-0 top-0 flex h-full w-full items-center justify-center text-center text-4xl leading-normal text-white'>
+                  <div className='bg-customBlue/80 flex h-1/2 w-1/2 items-center justify-center p-16'>
+                    <div dangerouslySetInnerHTML={{ __html: result }} />
+                  </div>
+                </div>
+              )}
             </form>
 
             {/* Job Opportunities Banner */}
@@ -604,14 +608,13 @@ export default function Contact() {
               href='mailto:Jobs@Momentstudio.com'
               className='bg-customBlue flex w-full items-center justify-around rounded-full'
             >
-              <Asterisk className='h-8 w-8' />
+              <Asterisk className='ml-24 h-8 w-8 md:ml-0' />
 
-              <p className='w-fit p-24 text-[2.5rem] font-light leading-normal text-white'>
-                For Job Opportunities please contact <br />
-                via Jobs@Momentstudio.com
+              <p className='w-3/4 p-24 text-7xl font-light leading-normal text-white md:w-1/2 md:text-[2.5rem]'>
+                For Job Opportunities please contact via Jobs@Momentstudio.com
               </p>
 
-              <Asterisk className='h-8 w-8' />
+              <Asterisk className='mr-24 h-8 w-8 md:mr-0' />
             </a>
           </motion.div>
         </section>

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,6 +12,9 @@ import Seo from '@/components/Seo';
 
 import { usePosition } from '@/PositionContext';
 import { GET_PAGE_DATA, GET_PROJECTS } from '@/queries/projectsQueries';
+
+import CloseFilters from '~/svg/close-filters.svg';
+import OpenFilters from '~/svg/open-filters.svg';
 
 interface Position {
   x: string;
@@ -422,6 +425,17 @@ const heroComponent = {
     transition: { ease: 'easeIn', duration: 0.3 },
   },
 };
+const filterComponent = {
+  hidden: { opacity: 0 },
+  enter: {
+    opacity: 1,
+    transition: { ease: 'easeIn', duration: 0.2 },
+  },
+  exit: {
+    opacity: 0,
+    transition: { ease: 'easeIn', duration: 0.15 },
+  },
+};
 const mainComponent = {
   hidden: { opacity: 0, x: -100, y: 0 },
   enter: {
@@ -447,6 +461,17 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
   const { lastPosition, setLastPosition } = usePosition();
   const { setHomeMode } = usePosition();
   const router = useRouter();
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] =
+    useState<boolean>(false);
+
+  const uniqueProjectTypes = Array.from(
+    new Set(
+      AllProjects.projects.edges.map(
+        (project: ProjectNode) => project.node.projectFields.type
+      )
+    )
+  );
 
   const dynamicInitials = lastPosition ? lastPosition : initialPositions;
 
@@ -482,14 +507,14 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
         <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent text-center'>
           {/* Hero Image */}
           <motion.div
-            className='pointer-events-auto relative flex h-[40vw] w-full flex-col gap-28 bg-stone-400 px-32 pb-28 '
-            style={{}}
+            className='pointer-events-auto relative flex h-[80vh] w-full flex-col gap-28 bg-stone-400 px-64 pb-28 md:h-[40vw] '
             key='hero'
             variants={heroComponent}
             initial='hidden'
             animate='enter'
             exit='exit'
           >
+            {/* Hero Image */}
             {pageData.pageBy.featuredImage.node.mediaItemUrl && (
               <Image
                 src={pageData.pageBy.featuredImage.node.mediaItemUrl}
@@ -500,11 +525,110 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
                 style={{ objectFit: 'cover', objectPosition: '50% 40%' }}
               />
             )}
+
+            {/* Mobile Projects Type Filters */}
+            <div className='relative z-10 mt-[20vh] w-full text-8xl md:hidden'>
+              {/* Active Filter */}
+              <p
+                className='cursor-pointer rounded-full border border-white p-24 font-semibold text-white'
+                onClick={() => setIsMobileFiltersOpen(true)}
+              >
+                {activeFilter ? activeFilter : 'All Categories'}
+              </p>
+
+              {/* Filters List */}
+              <AnimatePresence mode='wait'>
+                {isMobileFiltersOpen && (
+                  <motion.ul
+                    className='absolute top-0 flex max-h-[55vh] w-full flex-col items-center overflow-scroll rounded-[8rem] bg-white'
+                    key={`mobile-filter-list-${isMobileFiltersOpen}`}
+                    variants={filterComponent}
+                    initial='hidden'
+                    animate='enter'
+                    exit='exit'
+                  >
+                    {/* All Filter */}
+                    <li
+                      key='-1'
+                      onClick={() => {
+                        setActiveFilter(null);
+                        setIsMobileFiltersOpen(false);
+                      }}
+                      className={`text-customGray w-2/3 cursor-pointer py-24
+                                    ${activeFilter == null ? 'font-bold' : ''}`}
+                    >
+                      All
+                    </li>
+
+                    {/* Project Type Filters */}
+                    {uniqueProjectTypes.map((type, index) => (
+                      <li
+                        key={index}
+                        onClick={() => {
+                          setActiveFilter(type);
+                          setIsMobileFiltersOpen(false);
+                        }}
+                        className={`text-customGray w-2/3 cursor-pointer border-t py-24
+                                    ${activeFilter == type ? 'font-bold' : ''}`}
+                      >
+                        {type}
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+              {isMobileFiltersOpen ? (
+                <CloseFilters
+                  className='absolute right-36 top-24 h-28 w-28'
+                  onClick={() => setIsMobileFiltersOpen(false)}
+                />
+              ) : (
+                <OpenFilters
+                  className='h-22 w-22 absolute right-36 top-28'
+                  onClick={() => setIsMobileFiltersOpen(true)}
+                />
+              )}
+            </div>
+          </motion.div>
+
+          {/* Desktop Projects Type Filters */}
+          <motion.div
+            className='pointer-events-auto relative hidden h-fit w-full flex-col gap-28 md:flex'
+            style={{}}
+            key='filters'
+            variants={mainComponent}
+            initial='hidden'
+            animate='enter'
+            exit='exit'
+          >
+            <ul className='flex justify-center overflow-scroll px-32 py-14 pr-20'>
+              {/* All Filter */}
+              <li
+                key='-1'
+                onClick={() => setActiveFilter(null)}
+                className={`text-customGray cursor-pointer pr-32 text-3xl
+                              ${activeFilter == null ? 'font-bold' : ''}`}
+              >
+                All
+              </li>
+
+              {/* Project Type Filters */}
+              {uniqueProjectTypes.map((type, index) => (
+                <li
+                  key={index}
+                  onClick={() => setActiveFilter(type)}
+                  className={`text-customGray cursor-pointer pr-32 text-3xl
+                              ${activeFilter == type ? 'font-bold' : ''}`}
+                >
+                  {type}
+                </li>
+              ))}
+            </ul>
           </motion.div>
 
           {/* Projects Index */}
           <motion.div
-            className='pointer-events-auto mt-20 grid w-full grid-cols-4 gap-8 bg-transparent px-32 pb-28 '
+            className='pointer-events-auto grid w-full grid-cols-2 gap-8 bg-transparent px-32 pb-28 pt-32 md:grid-cols-4 md:pt-0 '
             style={{}}
             key='projects'
             variants={mainComponent}
@@ -512,47 +636,58 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
             animate='enter'
             exit='exit'
           >
-            {AllProjects.projects.edges.map((project: ProjectNode) => (
-              // Project Card
-              <Link
-                href={project.node.uri}
-                key={project.node.id}
-                className='text-customGray group relative flex flex-col items-center justify-start text-center'
-              >
-                {/* Project Image */}
-                <div className=' relative aspect-square w-full bg-stone-300'>
-                  {project.node.featuredImage.node.sourceUrl && (
-                    <Image
-                      src={project.node.featuredImage.node.sourceUrl}
-                      fill
-                      sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
-                      quality={98}
-                      alt={project.node.title}
-                      style={{
-                        objectFit: 'cover',
-                        objectPosition: 'center center',
+            {AllProjects.projects.edges
+              .filter((project: ProjectNode) => {
+                return activeFilter
+                  ? activeFilter.includes(project.node.projectFields.type)
+                  : true;
+              })
+              .map((project: ProjectNode) => (
+                // Project Card
+                <Link
+                  href={project.node.uri}
+                  key={project.node.id}
+                  className='text-customGray group relative flex flex-col items-start justify-start text-center'
+                >
+                  {/* Project Image */}
+                  <div className=' relative aspect-square w-full bg-stone-300'>
+                    {project.node.featuredImage.node.sourceUrl && (
+                      <Image
+                        src={project.node.featuredImage.node.sourceUrl}
+                        fill
+                        sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                        quality={98}
+                        alt={project.node.title}
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'center center',
+                        }}
+                      />
+                    )}
+                  </div>
+
+                  {/* Overlay */}
+                  <div className='absolute hidden aspect-square w-full bg-black opacity-0 transition duration-300 group-hover:opacity-10 md:flex' />
+
+                  {/* Project Info */}
+                  <div className='absolute hidden aspect-square w-full flex-col justify-between p-10 opacity-0 transition duration-300 group-hover:opacity-100 md:flex'>
+                    <h2 className='text-left text-5xl font-bold text-white'>
+                      {project.node.title}
+                    </h2>
+                    <div
+                      className='text-left text-xl font-extralight text-white'
+                      dangerouslySetInnerHTML={{
+                        __html: project.node.projectFields.coverInfo,
                       }}
                     />
-                  )}
-                </div>
+                  </div>
 
-                {/* Overlay */}
-                <div className='absolute aspect-square w-full bg-black opacity-0 transition duration-300 group-hover:opacity-10' />
-
-                {/* Project Info */}
-                <div className='absolute flex aspect-square w-full flex-col justify-between p-10 opacity-0 transition duration-300 group-hover:opacity-100'>
-                  <h2 className='text-left text-5xl font-bold text-white'>
+                  {/* Mobile Mode Title */}
+                  <h2 className='text-customGray mb-12 mt-8 text-left text-7xl md:hidden'>
                     {project.node.title}
                   </h2>
-                  <div
-                    className='text-left text-xl font-extralight text-white'
-                    dangerouslySetInnerHTML={{
-                      __html: project.node.projectFields.coverInfo,
-                    }}
-                  />
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
           </motion.div>
         </section>
       </main>

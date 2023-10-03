@@ -561,7 +561,6 @@ export default function Project({ projectData }: projectProps) {
       <Seo templateTitle='Projects' />
 
       <main className=' relative flex min-h-[85vh] w-full flex-col items-center justify-start bg-transparent px-32 pt-72 text-center'>
-        {/* Projects Info */}
         <motion.div
           className='mt-20 w-full pb-28'
           style={{}}
@@ -571,11 +570,30 @@ export default function Project({ projectData }: projectProps) {
           animate='enter'
           exit='exit'
         >
-          {/* Project Details */}
-          <div className='grid grid-cols-4 gap-8 bg-transparent '>
-            {/* Project Info Card */}
+          {/* Mobile Project Info */}
+          <div className='mb-32 flex w-full flex-col gap-44 md:hidden'>
+            <h1 className='text-customGray text-left text-9xl'>
+              {projectData.projectBy.title}
+            </h1>
+
+            <div>
+              <h2 className='text-customGray mb-2 text-left text-7xl font-semibold'>
+                Info
+              </h2>
+              <div
+                className='text-customGray text-left text-7xl font-light leading-relaxed'
+                dangerouslySetInnerHTML={{
+                  __html: projectData.projectBy.projectFields.info,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Project Info Grid */}
+          <div className='grid grid-cols-2 gap-8 bg-transparent md:grid-cols-4 '>
+            {/* Desktop Project Info Card */}
             <div
-              className={`flex aspect-square w-full flex-col justify-between p-4 pl-0
+              className={`hidden aspect-square w-full flex-col justify-between p-4 pl-0 md:flex
                               ${
                                 projectData.projectBy.projectFields.description
                                   ? 'row-span-3'
@@ -628,6 +646,7 @@ export default function Project({ projectData }: projectProps) {
                     alt='project photo'
                     fill
                     sizes='25vw'
+                    quality={98}
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'center center',
@@ -636,6 +655,21 @@ export default function Project({ projectData }: projectProps) {
                 </div>
               ))}
           </div>
+
+          {/* Mobile Description Block */}
+          {projectData.projectBy.projectFields.description && (
+            <div className='mb-96 mt-52 md:hidden'>
+              <h2 className='text-customGray mb-2 mt-8 text-left text-7xl font-semibold'>
+                Description
+              </h2>
+              <div
+                className='text-customGray text-left text-7xl font-light leading-relaxed'
+                dangerouslySetInnerHTML={{
+                  __html: projectData.projectBy.projectFields.description,
+                }}
+              />
+            </div>
+          )}
 
           {/* Project Images Modal */}
           {modalVisible && (
@@ -650,19 +684,21 @@ export default function Project({ projectData }: projectProps) {
           {/* Related Projects */}
           {relatedProjects && (
             <div className='w-full'>
-              <hr className='border-customGray mb-24 mt-32' />
+              <hr className='border-customGray mb-24 mt-32 hidden md:block' />
 
-              <h3 className='text-customGray mb-8 text-left text-7xl'>
+              <h3 className='text-customGray mb-8 text-left text-[10rem] md:text-7xl'>
                 Next Up
               </h3>
 
-              <div className='grid w-full grid-cols-4 gap-8 bg-transparent '>
+              <hr className='border-customGray mb-32 mt-40 md:hidden' />
+
+              <div className='grid w-full grid-cols-2 gap-8 bg-transparent md:grid-cols-4 '>
                 {relatedProjects.map((project: relatedProjects) => (
                   // Project Card
                   <Link
                     href={project.uri}
                     key={project.id}
-                    className='text-customGray group relative flex flex-col items-center justify-start text-center'
+                    className='text-customGray group relative flex flex-col items-start justify-start text-center'
                   >
                     {/* Project Image */}
                     <div className=' relative aspect-square w-full bg-stone-300'>
@@ -670,8 +706,8 @@ export default function Project({ projectData }: projectProps) {
                         <Image
                           src={project.featuredImage.node.sourceUrl}
                           fill
-                          sizes='25vw'
-                          quality={100}
+                          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                          quality={98}
                           alt={project.title}
                           style={{
                             objectFit: 'cover',
@@ -682,10 +718,10 @@ export default function Project({ projectData }: projectProps) {
                     </div>
 
                     {/* Overlay */}
-                    <div className='absolute aspect-square w-full bg-black opacity-0 transition duration-300 group-hover:opacity-10' />
+                    <div className='absolute hidden aspect-square w-full bg-black opacity-0 transition duration-300 group-hover:opacity-10 md:flex' />
 
                     {/* Project Info */}
-                    <div className='absolute flex aspect-square w-full flex-col justify-between p-10 opacity-0 transition duration-300 group-hover:opacity-100'>
+                    <div className='absolute hidden aspect-square w-full flex-col justify-between p-10 opacity-0 transition duration-300 group-hover:opacity-100 md:flex'>
                       <h2 className='text-left text-5xl font-bold text-white'>
                         {project.title}
                       </h2>
@@ -696,6 +732,11 @@ export default function Project({ projectData }: projectProps) {
                         }}
                       />
                     </div>
+
+                    {/* Mobile Mode Title */}
+                    <h2 className='text-customGray mb-12 mt-8 text-left text-7xl md:hidden'>
+                      {project.title}
+                    </h2>
                   </Link>
                 ))}
               </div>
