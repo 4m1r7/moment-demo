@@ -507,7 +507,7 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
         <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent text-center'>
           {/* Hero Image */}
           <motion.div
-            className='pointer-events-auto relative flex h-[80vh] w-full flex-col gap-28 bg-stone-400 px-64 pb-28 md:h-[40vw] '
+            className='pointer-events-auto relative flex h-[80vh] w-full flex-col gap-28 bg-stone-400 px-56 pb-28 md:h-[40vw] '
             key='hero'
             variants={heroComponent}
             initial='hidden'
@@ -521,6 +521,7 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
                 fill
                 sizes='100vw'
                 quality={98}
+                priority
                 alt='Hero Image'
                 style={{ objectFit: 'cover', objectPosition: '50% 40%' }}
               />
@@ -530,7 +531,7 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
             <div className='relative z-10 mt-[20vh] w-full text-8xl md:hidden'>
               {/* Active Filter */}
               <p
-                className='cursor-pointer rounded-full border border-white p-24 font-semibold text-white'
+                className='cursor-pointer rounded-full border border-white px-24 py-28 font-semibold text-white'
                 onClick={() => setIsMobileFiltersOpen(true)}
               >
                 {activeFilter ? activeFilter : 'All Categories'}
@@ -541,7 +542,7 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
                 {isMobileFiltersOpen && (
                   <motion.ul
                     className='absolute top-0 flex max-h-[55vh] w-full flex-col items-center overflow-scroll rounded-[8rem] bg-white'
-                    key={`mobile-filter-list-${isMobileFiltersOpen}`}
+                    key='mobile-filter-list'
                     variants={filterComponent}
                     initial='hidden'
                     animate='enter'
@@ -554,7 +555,7 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
                         setActiveFilter(null);
                         setIsMobileFiltersOpen(false);
                       }}
-                      className={`text-customGray w-2/3 cursor-pointer py-24
+                      className={`text-customGray w-2/3 cursor-pointer py-28
                                     ${activeFilter == null ? 'font-bold' : ''}`}
                     >
                       All
@@ -568,7 +569,7 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
                           setActiveFilter(type);
                           setIsMobileFiltersOpen(false);
                         }}
-                        className={`text-customGray w-2/3 cursor-pointer border-t py-24
+                        className={`text-customGray w-2/3 cursor-pointer border-t py-28
                                     ${activeFilter == type ? 'font-bold' : ''}`}
                       >
                         {type}
@@ -579,12 +580,12 @@ export default function Projects({ AllProjects, pageData }: projectsProps) {
               </AnimatePresence>
               {isMobileFiltersOpen ? (
                 <CloseFilters
-                  className='absolute right-36 top-24 h-28 w-28'
+                  className='absolute right-36 top-24 h-28 w-28 cursor-pointer'
                   onClick={() => setIsMobileFiltersOpen(false)}
                 />
               ) : (
                 <OpenFilters
-                  className='h-22 w-22 absolute right-36 top-28'
+                  className='h-22 w-22 absolute right-36 top-28 cursor-pointer'
                   onClick={() => setIsMobileFiltersOpen(true)}
                 />
               )}

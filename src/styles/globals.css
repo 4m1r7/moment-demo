@@ -206,3 +206,16 @@
     font-weight: 300;
   }
 }
+
+/* Mobile search input placeholder font weight */
+.search-input {
+  resize: none;
+  caret-color: transparent;
+}
+.search-input::placeholder {
+  font-weight: bold;
+}
+.search-input:focus {
+  border: none;
+  outline: none;
+}

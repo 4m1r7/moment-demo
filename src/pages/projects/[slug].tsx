@@ -560,9 +560,9 @@ export default function Project({ projectData }: projectProps) {
     >
       <Seo templateTitle='Projects' />
 
-      <main className=' relative flex min-h-[85vh] w-full flex-col items-center justify-start bg-transparent px-32 pt-72 text-center'>
+      <main className=' relative flex min-h-[85vh] w-full flex-col items-center justify-start bg-transparent px-32 pt-[17svh] text-center md:pt-72'>
         <motion.div
-          className='mt-20 w-full pb-28'
+          className='mt-20 w-full pb-14'
           style={{}}
           key='projects'
           variants={mainComponent}
@@ -590,7 +590,7 @@ export default function Project({ projectData }: projectProps) {
           </div>
 
           {/* Project Info Grid */}
-          <div className='grid grid-cols-2 gap-8 bg-transparent md:grid-cols-4 '>
+          <div className='mb-96 grid grid-cols-2 gap-8 bg-transparent md:mb-0 md:grid-cols-4'>
             {/* Desktop Project Info Card */}
             <div
               className={`hidden aspect-square w-full flex-col justify-between p-4 pl-0 md:flex

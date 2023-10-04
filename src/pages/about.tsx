@@ -470,7 +470,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
       <Seo templateTitle='Home' />
 
       <main>
-        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-64 text-center '>
+        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-[18svh] text-center md:pt-64 '>
           <motion.div
             className='pointer-events-auto flex w-full flex-col gap-28 bg-transparent px-32 pb-28 '
             style={{}}
@@ -501,7 +501,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
             />
 
             {/* Current Members */}
-            <h2 className='text-customGray mb-28 w-full text-8xl md:text-6xl'>
+            <h2 className='text-customGray mb-10 w-full text-8xl md:mb-0 md:text-6xl'>
               Current Members of Moment
             </h2>
 
@@ -542,7 +542,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
             {/* Previous Members (conditionally rendered if there are any previous members) */}
             {prevMembers.length > 0 && (
               <div className='mt-8 flex w-full flex-col gap-28'>
-                <h2 className='text-customGray mb-28 w-full text-8xl md:text-6xl'>
+                <h2 className='text-customGray mb-10 mt-20 w-full text-8xl md:mb-0 md:mt-0 md:text-6xl'>
                   Previous Members of Moment
                 </h2>
 

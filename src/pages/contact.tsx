@@ -508,7 +508,7 @@ export default function Contact() {
       <Seo templateTitle='Contact' />
 
       <main>
-        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-80  text-center'>
+        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-[20svh] text-center  md:pt-80'>
           <motion.div
             className='pointer-events-auto flex w-full flex-col gap-28 bg-transparent px-32 pb-28'
             style={{}}
@@ -610,7 +610,7 @@ export default function Contact() {
             >
               <Asterisk className='ml-24 h-8 w-8 md:ml-0' />
 
-              <p className='w-3/4 p-24 text-7xl font-light leading-normal text-white md:w-1/2 md:text-[2.5rem]'>
+              <p className='w-3/4 p-24 text-8xl font-light leading-normal text-white md:w-1/2 md:text-[2.5rem]'>
                 For Job Opportunities please contact via Jobs@Momentstudio.com
               </p>
 
