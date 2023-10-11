@@ -34,14 +34,39 @@ interface shapeProps {
   initialPositions: stagePositions;
   brightHeader?: boolean;
   landingMode?: boolean;
+  mobileHeaderMode?: string;
   handleLogoClick: () => void;
 }
+
+const mobilePositions: {
+  [mode: string]: {
+    [activeElement: string]: { [property: string]: string | number };
+  };
+} = {
+  default: {
+    logo: {
+      x: '0vw',
+    },
+    search: {
+      opacity: 1,
+    },
+  },
+  home: {
+    logo: {
+      x: 'calc( -40vw + 11rem )',
+    },
+    search: {
+      opacity: 0,
+    },
+  },
+};
 
 export default function Header({
   positions,
   initialPositions,
   brightHeader,
   landingMode,
+  mobileHeaderMode = 'default',
   handleLogoClick,
 }: shapeProps) {
   const router = useRouter();
@@ -170,24 +195,44 @@ export default function Header({
         className='pointer-events-none absolute left-0 top-0 flex h-fit w-full items-center justify-between gap-24 p-56 md:hidden'
         key='mobile-header'
       >
-        <Search
-          onClick={handleSearchClick}
-          className={` pointer-events-auto h-40 w-40 cursor-pointer
-                      ${brightHeader ? 'bright-logo' : ''}`}
-        />
-        <MobileLogo
-          onClick={handleLogoClick}
-          className={` pointer-events-auto h-40 w-80 cursor-pointer
-                      ${brightHeader ? 'bright-logo' : ''}`}
-        />
+        <motion.div
+          key='search'
+          animate={mobilePositions[mobileHeaderMode].search}
+          transition={{
+            ease: 'easeOut',
+            duration: 1.5,
+          }}
+        >
+          <Search
+            onClick={handleSearchClick}
+            className={` pointer-events-auto h-40 w-40 cursor-pointer
+                        ${brightHeader ? 'bright-logo' : ''}`}
+          />
+        </motion.div>
+
+        <motion.div
+          key='logo'
+          animate={mobilePositions[mobileHeaderMode].logo}
+          transition={{
+            ease: 'easeInOut',
+            duration: 1.5,
+          }}
+        >
+          <MobileLogo
+            onClick={handleLogoClick}
+            className={` pointer-events-auto h-40 w-80 cursor-pointer
+                        ${brightHeader ? 'bright-logo' : ''}`}
+          />
+        </motion.div>
+
         <OpenMenu
           onClick={handleMenuClick}
           className={` pointer-events-auto h-40 w-40 cursor-pointer
-                      ${brightHeader ? 'bright-logo' : ''}`}
+          ${brightHeader ? 'bright-logo' : ''}`}
         />
       </header>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu & Search */}
       <AnimatePresence mode='wait'>
         {isMenuOpen && (
           <MobileMenu
