@@ -63,27 +63,27 @@ interface PageData {
 
 const initialPositions: stagePositions = {
   logo: {
-    x: '0vw',
-    y: '-53.15vw',
+    x: '6vw',
+    y: '-10vh',
     width: '18vw',
     height: '15rem',
-    opacity: 1,
+    opacity: 0,
     rotate: 0,
   },
   line: {
-    x: '21.5vw',
-    y: '-50vw',
+    x: '13vw',
+    y: '-10vh',
     width: '1vw',
-    height: '89vw',
-    opacity: 1,
-    rotate: 90,
+    height: '3.5rem',
+    opacity: 0,
+    rotate: 0,
   },
   menu: {
-    x: '35.75vw',
-    y: '-52.5vw',
-    width: '25vw',
+    x: '18vw',
+    y: '-10vh',
+    width: '42vw',
     height: 'fit-content',
-    opacity: 1,
+    opacity: 0,
     rotate: 0,
   },
   blue: {
@@ -122,60 +122,60 @@ const initialPositions: stagePositions = {
 const stagePositions: { [key: string]: stagePositions } = {
   firstPositions: {
     logo: {
-      x: '0vw',
-      y: '-43.15vw',
+      x: '6vw',
+      y: '0vh',
       width: '18vw',
       height: '15rem',
       opacity: 1,
       rotate: 0,
     },
     line: {
-      x: '21.5vw',
-      y: '-40vw',
+      x: '13vw',
+      y: '0vh',
       width: '1vw',
-      height: '89vw',
+      height: '3.5rem',
       opacity: 1,
-      rotate: 90,
+      rotate: 0,
     },
     menu: {
-      x: '35.75vw',
-      y: '-42.5vw',
-      width: '25vw',
+      x: '18vw',
+      y: '0vh',
+      width: '42vw',
       height: 'fit-content',
       opacity: 1,
       rotate: 0,
     },
     blue: {
       x: 'calc( -50vw + 9.2rem )',
-      y: 'calc( -50vh + 8.2rem )',
+      y: 'calc( -50vh + 9.5rem )',
       width: '2.5vw',
       height: '2.5vw',
-      opacity: 0,
-      rotate: -360,
+      opacity: 1,
+      rotate: 115,
     },
     yellow: {
-      x: 'calc( -50vw + 8rem )',
-      y: 'calc( -50vh + 8rem )',
+      x: 'calc( -50vw + 10rem )',
+      y: 'calc( -50vh + 8.7rem )',
       width: '2vw',
       height: '2vw',
-      opacity: 0,
-      rotate: -340,
+      opacity: 1,
+      rotate: -100,
     },
     green: {
-      x: 'calc( -50vw + 9.2rem )',
-      y: 'calc( -50vh + 9.3rem )',
+      x: 'calc( -50vw + 8rem )',
+      y: 'calc( -50vh + 8.7rem )',
       width: '2.3vw',
       height: '2.3vw',
-      opacity: 0,
-      rotate: -80,
+      opacity: 1,
+      rotate: -100,
     },
     pink: {
-      x: 'calc( -50vw + 7.8rem )',
-      y: 'calc( -50vh + 8.8rem )',
+      x: 'calc( -50vw + 9.2rem )',
+      y: 'calc( -50vh + 7.8rem )',
       width: '2.3vw',
       height: '2.3vw',
-      opacity: 0,
-      rotate: 410,
+      opacity: 1,
+      rotate: 60,
     },
   },
   blue: {
@@ -470,7 +470,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
       <Seo templateTitle='Home' />
 
       <main>
-        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-64 text-center '>
+        <section className=' pointer-events-none relative flex min-h-screen w-full flex-col items-center justify-start bg-transparent pt-[18svh] text-center md:pt-64 '>
           <motion.div
             className='pointer-events-auto flex w-full flex-col gap-28 bg-transparent px-32 pb-28 '
             style={{}}
@@ -481,7 +481,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
             exit='exit'
           >
             {/* Team Photo */}
-            <div className='relative h-[55vh] w-full overflow-hidden rounded-full bg-stone-200'>
+            <div className='relative h-[25vh] w-full overflow-hidden rounded-full bg-stone-200 md:h-[55vh]'>
               {aboutData.pageBy.featuredImage.node.mediaItemUrl && (
                 <Image
                   src={aboutData.pageBy.featuredImage.node.mediaItemUrl}
@@ -496,16 +496,16 @@ export default function About({ aboutData, membersData }: AboutProps) {
 
             {/* About Paragraph */}
             <div
-              className=' cms-content text-customGray mb-20 w-full px-[15%] text-left'
+              className='cms-content text-customGray mb-20 mt-14 w-full px-[5%] text-left md:px-[15%]'
               dangerouslySetInnerHTML={{ __html: aboutData.pageBy.content }}
             />
 
             {/* Current Members */}
-            <h2 className='text-customGray w-full text-6xl'>
+            <h2 className='text-customGray mb-10 w-full text-8xl md:mb-0 md:text-6xl'>
               Current Members of Moment
             </h2>
 
-            <div className='grid w-full grid-cols-4 gap-28 px-16'>
+            <div className='grid w-full grid-cols-2 gap-28 px-16 md:grid-cols-4'>
               {membersData.members.edges
                 .filter((member: MemberNode) => {
                   return !member.node.memberFields.exMember;
@@ -516,7 +516,7 @@ export default function About({ aboutData, membersData }: AboutProps) {
                     key={member.node.id}
                     className='text-customGray relative flex flex-col items-center justify-start text-center'
                   >
-                    <div className='relative mb-9 aspect-square w-full overflow-hidden rounded-full bg-stone-200'>
+                    <div className='relative mb-16 aspect-square w-full overflow-hidden rounded-full bg-stone-200 md:mb-9'>
                       {member.node.featuredImage.node.sourceUrl && (
                         <Image
                           src={member.node.featuredImage.node.sourceUrl}
@@ -528,9 +528,11 @@ export default function About({ aboutData, membersData }: AboutProps) {
                       )}
                     </div>
 
-                    <h3 className='mb-1'>{member.node.title}</h3>
+                    <h3 className='mb-6 text-7xl md:mb-1 md:text-2xl'>
+                      {member.node.title}
+                    </h3>
 
-                    <p className=' text-2xl font-extralight'>
+                    <p className='text-7xl font-extralight md:text-2xl'>
                       {member.node.memberFields.position}
                     </p>
                   </div>
@@ -540,30 +542,33 @@ export default function About({ aboutData, membersData }: AboutProps) {
             {/* Previous Members (conditionally rendered if there are any previous members) */}
             {prevMembers.length > 0 && (
               <div className='mt-8 flex w-full flex-col gap-28'>
-                <h2 className='text-customGray w-full text-6xl'>
+                <h2 className='text-customGray mb-10 mt-20 w-full text-8xl md:mb-0 md:mt-0 md:text-6xl'>
                   Previous Members of Moment
                 </h2>
 
-                <div className='grid w-full grid-cols-4 gap-28 px-16'>
+                <div className='grid w-full grid-cols-2 gap-28 px-16 md:grid-cols-4'>
                   {prevMembers.reverse().map((member: MemberNode) => (
                     <div
                       key={member.node.id}
                       className='text-customGray relative flex flex-col items-center justify-start text-center'
                     >
-                      <div className='relative mb-9 aspect-square w-full overflow-hidden rounded-full'>
-                        <Image
-                          src={member.node.featuredImage.node.sourceUrl}
-                          fill
-                          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
-                          alt='Moment Team'
-                          style={{
-                            objectFit: 'cover',
-                            objectPosition: '50% 40%',
-                          }}
-                        />
+                      <div className='relative mb-16 aspect-square w-full overflow-hidden rounded-full bg-stone-200 md:mb-9'>
+                        {member.node.featuredImage.node.sourceUrl && (
+                          <Image
+                            src={member.node.featuredImage.node.sourceUrl}
+                            fill
+                            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw'
+                            alt='Moment Team'
+                            style={{ objectFit: 'cover' }}
+                          />
+                        )}
                       </div>
-                      <h3 className='mb-1'>{member.node.title}</h3>
-                      <p className=' text-2xl font-extralight'>
+
+                      <h3 className='mb-6 text-7xl md:mb-1 md:text-2xl'>
+                        {member.node.title}
+                      </h3>
+
+                      <p className='text-7xl font-extralight md:text-2xl'>
                         {member.node.memberFields.position}
                       </p>
                     </div>

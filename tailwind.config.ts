@@ -5,6 +5,9 @@ export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      screens: {
+        md: '767px',
+      },
       fontFamily: {
         primary: ['Segoe UI', 'Inter', ...defaultTheme.fontFamily.sans],
       },

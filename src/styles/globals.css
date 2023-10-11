@@ -193,3 +193,29 @@
   padding-bottom: 5px;
   font-weight: 300;
 }
+
+@media (max-width: 767px) {
+  .cms-content h2 {
+    font-size: 4.5rem;
+    padding-bottom: 3rem;
+  }
+  .cms-content p {
+    font-size: 4rem;
+    line-height: 5rem;
+    padding-bottom: 5px;
+    font-weight: 300;
+  }
+}
+
+/* Mobile search input placeholder font weight */
+.search-input {
+  resize: none;
+  caret-color: transparent;
+}
+.search-input::placeholder {
+  font-weight: bold;
+}
+.search-input:focus {
+  border: none;
+  outline: none;
+}

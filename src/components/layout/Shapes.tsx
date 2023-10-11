@@ -40,7 +40,7 @@ export default function Shapes({
   handleShapeClick,
 }: shapeProps) {
   return (
-    <div className=' items-between pointer-events-none  absolute top-0 z-0 flex h-screen w-full flex-col justify-center overflow-hidden'>
+    <div className=' items-between pointer-events-none absolute top-0 z-0 hidden h-screen w-full flex-col justify-center overflow-hidden md:flex'>
       {/* Shape Elements */}
       <motion.div
         className='pointer-events-auto absolute z-30 cursor-pointer self-center mix-blend-multiply'

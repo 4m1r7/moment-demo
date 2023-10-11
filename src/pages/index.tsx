@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import Layout from '@/components/layout/Layout';
+import MobileShapes from '@/components/MobileShapes';
 import Seo from '@/components/Seo';
 
 import { usePosition } from '@/PositionContext';
@@ -29,6 +30,7 @@ interface stagePositions {
   pink: Position;
 }
 
+// Mobile shape positions are defined in MobileShape component
 const initialPositions: stagePositions = {
   logo: {
     x: '0vw',
@@ -498,6 +500,7 @@ const stagePositions: { [key: string]: stagePositions } = {
 
 export default function Home() {
   const [showDefaultMode, setShowDefaultMode] = useState(true);
+  const [mobileHeaderMode, setMobileHeaderMode] = useState('default');
 
   const { lastPosition, setLastPosition, homeMode, setHomeMode } =
     usePosition();
@@ -543,10 +546,12 @@ export default function Home() {
       setHomeMode('goDefault');
       setShowDefaultMode(false);
       setActiveShape(null);
+      setMobileHeaderMode('home');
     } else if (homeMode == 'goDefault') {
       setPositions(stagePositions['defaultPositions']);
       setHomeMode('goLanding');
       setActiveShape(null);
+      setMobileHeaderMode('default');
     }
   };
 
@@ -559,6 +564,7 @@ export default function Home() {
       handleLogoClick={handleLogoClick}
       noFooter
       landingMode={positions == landingPositions}
+      mobileHeaderMode={mobileHeaderMode}
     >
       <Seo templateTitle='Home' />
 
@@ -566,6 +572,11 @@ export default function Home() {
         key={activeShape}
         className=' items-between pointer-events-none  absolute top-0 z-0 flex h-screen w-full flex-col justify-center overflow-hidden'
       >
+        <MobileShapes
+          mobileHeaderMode={mobileHeaderMode}
+          setMobileHeaderMode={setMobileHeaderMode}
+        />
+
         {/* Image Elements */}
         <AnimatePresence>
           {/* Project Photo */}
@@ -607,6 +618,7 @@ export default function Home() {
                 className='h-full w-full'
                 src='/images/blue-project.png'
                 fill
+                priority
                 quality={100}
                 style={{ objectFit: 'contain' }}
                 alt=''
@@ -652,6 +664,7 @@ export default function Home() {
                 className='h-full w-full'
                 src='/images/yellow-project.png'
                 fill
+                priority
                 quality={100}
                 style={{ objectFit: 'contain' }}
                 alt=''
@@ -697,6 +710,7 @@ export default function Home() {
                 className='h-full w-full'
                 src='/images/green-project.png'
                 fill
+                priority
                 quality={100}
                 style={{ objectFit: 'contain' }}
                 alt=''
@@ -742,6 +756,7 @@ export default function Home() {
                 className='h-full w-full'
                 src='/images/pink-project-.png'
                 fill
+                priority
                 quality={100}
                 style={{ objectFit: 'contain' }}
                 alt=''
