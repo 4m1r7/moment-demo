@@ -33,6 +33,94 @@ interface shapeProps {
   handleShapeClick: (shape: string) => void;
 }
 
+const blueJiggle = {
+  y: [
+    '8px',
+    '12px',
+    '5px',
+    '2px',
+    '-5px',
+    '-9px',
+    '-11px',
+    '-4px',
+    '0px',
+    '5px',
+    '8px',
+  ],
+  x: ['5px', '0px', '-10px', '2px', '10px', '5px'],
+  transition: {
+    duration: 12,
+    ease: 'easeInOut',
+    repeat: Infinity,
+  },
+};
+
+const yellowJiggle = {
+  y: [
+    '0px',
+    '5px',
+    '8px',
+    '12px',
+    '5px',
+    '2px',
+    '-5px',
+    '-9px',
+    '-11px',
+    '-4px',
+    '0px',
+  ],
+  x: ['-10px', '2px', '10px', '5px', '0px', '-10px'],
+  transition: {
+    duration: 13,
+    ease: 'easeInOut',
+    repeat: Infinity,
+  },
+};
+
+const greenJiggle = {
+  y: [
+    '12px',
+    '5px',
+    '2px',
+    '-5px',
+    '-9px',
+    '-11px',
+    '-4px',
+    '0px',
+    '5px',
+    '8px',
+    '12px',
+  ],
+  x: ['10px', '5px', '0px', '-10px', '2px', '10px'],
+  transition: {
+    duration: 11,
+    ease: 'easeInOut',
+    repeat: Infinity,
+  },
+};
+
+const pinkJiggle = {
+  y: [
+    '-5px',
+    '-9px',
+    '-11px',
+    '-4px',
+    '0px',
+    '5px',
+    '8px',
+    '12px',
+    '5px',
+    '2px',
+    '-5px',
+  ],
+  x: ['2px', '10px', '5px', '0px', '-10px', '2px'],
+  transition: {
+    duration: 10,
+    ease: 'easeInOut',
+    repeat: Infinity,
+  },
+};
+
 export default function Shapes({
   activeShape,
   positions,
@@ -54,7 +142,11 @@ export default function Shapes({
         }}
         onClick={() => handleShapeClick('blue')}
       >
-        <Blue className='h-full w-full' />
+        <motion.div
+          animate={activeShape === 'blue' ? { x: 0, y: 0 } : blueJiggle}
+        >
+          <Blue className='h-full w-full' />
+        </motion.div>
       </motion.div>
 
       <motion.div
@@ -69,7 +161,11 @@ export default function Shapes({
         }}
         onClick={() => handleShapeClick('yellow')}
       >
-        <Yellow className='h-full w-full' />
+        <motion.div
+          animate={activeShape === 'yellow' ? { x: 0, y: 0 } : yellowJiggle}
+        >
+          <Yellow className='h-full w-full' />
+        </motion.div>
       </motion.div>
 
       <motion.div
@@ -84,7 +180,11 @@ export default function Shapes({
         }}
         onClick={() => handleShapeClick('green')}
       >
-        <Green className='h-full w-full' />
+        <motion.div
+          animate={activeShape === 'green' ? { x: 0, y: 0 } : greenJiggle}
+        >
+          <Green className='h-full w-full' />
+        </motion.div>
       </motion.div>
 
       <motion.div
@@ -99,7 +199,11 @@ export default function Shapes({
         }}
         onClick={() => handleShapeClick('pink')}
       >
-        <Pink className='h-full w-full' />
+        <motion.div
+          animate={activeShape === 'pink' ? { x: 0, y: 0 } : pinkJiggle}
+        >
+          <Pink className='h-full w-full' />
+        </motion.div>
       </motion.div>
 
       {/* Image Elements */}
