@@ -247,6 +247,7 @@ export default function Shapes({
               className='h-full w-full'
               src='/images/blue-project.png'
               fill
+              priority
               quality={100}
               style={{ objectFit: 'contain' }}
               alt=''
@@ -292,6 +293,7 @@ export default function Shapes({
               className='h-full w-full'
               src='/images/yellow-project.png'
               fill
+              priority
               quality={100}
               style={{ objectFit: 'contain' }}
               alt=''
@@ -337,6 +339,7 @@ export default function Shapes({
               className='h-full w-full'
               src='/images/green-project.png'
               fill
+              priority
               quality={100}
               style={{ objectFit: 'contain' }}
               alt=''
@@ -382,6 +385,7 @@ export default function Shapes({
               className='h-full w-full'
               src='/images/pink-project-.png'
               fill
+              priority
               quality={100}
               style={{ objectFit: 'contain' }}
               alt=''
