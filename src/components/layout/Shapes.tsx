@@ -3,6 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 
+import BlueProjectImage from '~/images/blue-project.png';
+import GreenProjectImage from '~/images/green-project.png';
+import PinkProjectImage from '~/images/pink-project.png';
+import YellowProjectImage from '~/images/yellow-project.png';
 import Blue from '~/svg/blue-shape.svg';
 import Arrow from '~/svg/button-arrow.svg';
 import Green from '~/svg/green-shape.svg';
@@ -245,7 +249,7 @@ export default function Shapes({
           >
             <Image
               className='h-full w-full'
-              src='/images/blue-project.png'
+              src={BlueProjectImage}
               fill
               priority
               quality={100}
@@ -291,7 +295,7 @@ export default function Shapes({
           >
             <Image
               className='h-full w-full'
-              src='/images/yellow-project.png'
+              src={YellowProjectImage}
               fill
               priority
               quality={100}
@@ -337,7 +341,7 @@ export default function Shapes({
           >
             <Image
               className='h-full w-full'
-              src='/images/green-project.png'
+              src={GreenProjectImage}
               fill
               priority
               quality={100}
@@ -383,7 +387,7 @@ export default function Shapes({
           >
             <Image
               className='h-full w-full'
-              src='/images/pink-project-.png'
+              src={PinkProjectImage}
               fill
               priority
               quality={100}
