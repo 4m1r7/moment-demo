@@ -605,13 +605,13 @@ export default function Contact() {
 
             {/* Job Opportunities Banner */}
             <a
-              href='mailto:Jobs@Momentstudio.com'
+              href='mailto:jobs@moment-studio.ir'
               className='bg-customBlue flex w-full items-center justify-around rounded-full'
             >
               <Asterisk className='ml-24 h-8 w-8 md:ml-0' />
 
               <p className='w-3/4 p-24 text-8xl font-light leading-normal text-white md:w-1/2 md:text-[2.5rem]'>
-                For Job Opportunities please contact via Jobs@Momentstudio.com
+                For Job Opportunities please contact via Jobs@Moment-Studio.ir
               </p>
 
               <Asterisk className='mr-24 h-8 w-8 md:mr-0' />
